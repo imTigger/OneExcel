@@ -1,0 +1,41 @@
+{
+    "name": "imtigger/oneexcel",
+    "description": "PHP Excel read/write abstraction layer, support PHPExcel, LibXL and Spout",
+    "homepage": "https://github.com/imTigger/oneexcel",
+    "keywords": ["excel", "phpexcel", "libxl", "spout"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Tiger Fok",
+            "email": "tiger@tiger-workshop.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.6.4",
+        "box/spout": "^2.7",
+        "phpoffice/phpexcel": "^1.8"
+    },
+    "autoload": {
+        "psr-4": {
+            "Imtigger\\OneExcel\\": "src/Imtigger/OneExcel"
+        }
+    },
+    "config": {
+        "preferred-install": "dist"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require-dev": {
+        "phpunit/phpunit": "^5.5"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Imtigger\\OneExcel\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "phpunit --colors=always; ./vendor/bin/php-cs-fixer fix src --dry-run --diff --ansi",
+        "travis": "phpunit --coverage-clover build/logs/clover.xml",
+        "fix": "./vendor/bin/php-cs-fixer fix src --diff --ansi"
+    }
+}
