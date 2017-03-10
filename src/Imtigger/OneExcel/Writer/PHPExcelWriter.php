@@ -24,7 +24,7 @@ class PHPExcelWriter extends OneExcelWriter implements OneExcelWriterInterface
     {
         $this->checkFormatSupported($format);
         $this->format = $format;
-        $objReader = PHPExcel_IOFactory::createReaderForFile($this->getFormatCode($this->format));
+        $objReader = PHPExcel_IOFactory::createReader($this->getFormatCode($this->format));
         $this->book = $objReader->load($filename);
         $this->sheet = $this->book->getActiveSheet();
     }
