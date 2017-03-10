@@ -1,6 +1,7 @@
 <?php
-namespace Imtigger\OneExcel;
+namespace Imtigger\OneExcel\Writer;
 
+use Imtigger\OneExcel\OneExcelWriterInterface;
 use Box\Spout\Writer\WriterFactory;
 use Box\Spout\Common\Type;
 

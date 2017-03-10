@@ -1,5 +1,7 @@
 <?php
-namespace Imtigger\OneExcel;
+namespace Imtigger\OneExcel\Writer;
+
+use Imtigger\OneExcel\OneExcelWriterInterface;
 
 class LibXLWriter extends OneExcelWriter implements OneExcelWriterInterface
 {
