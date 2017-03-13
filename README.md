@@ -1,7 +1,17 @@
 # OneExcel
-PHP Excel read/write abstraction layer, support PHPExcel, LibXL and Spout
+PHP Excel read/write abstraction layer, support [PHPExcel](https://github.com/PHPOffice/PHPExcel), [LibXL](https://github.com/iliaal/php_excel) and [Spout](https://github.com/box/spout)
+
+Targets to simplify server compatibility issue between Excel libraries.
+
+Ideal for simple-formatted but huge spreadsheet files 
 
 ## Installation
+
+### Requirements
+
+- PHP 5.5+
+- `php_zip`, `php_xmlreader`, `php_simplexml` enabled
+- (Recommended) LibXL installed & `php_excel` enabled
 
 ### Composer
 
