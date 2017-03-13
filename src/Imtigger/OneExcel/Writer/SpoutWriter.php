@@ -44,19 +44,20 @@ class SpoutWriter extends OneExcelWriter implements OneExcelWriterInterface
         }
 
         // Aggregate columns in same row
-        if ($this->last_row == $row_num) {
-            $this->data[$column_num] = $data;
-        } else {
-            $this->writer->addRow($this->data);
+        if ($this->last_row != $row_num) {
+            $this->addRow($this->data);
             $this->data = [];
         }
+
+        $this->data[$column_num] = $data;
+
         $this->last_row = $row_num;
     }
 
     public function close()
     {
         // Write out last row
-        $this->writer->addRow($this->data);
+        $this->addRow($this->data);
         $this->writer->close();
     }
 
@@ -84,5 +85,19 @@ class SpoutWriter extends OneExcelWriter implements OneExcelWriterInterface
         @unlink($this->temp_file);
 
         exit;
+    }
+
+    private function addRow($data) {
+        if (sizeof($data) == 0) return;
+
+        // Pad empty cells
+        for ($i = 0; $i <= max(array_keys($data)); $i += 1) {
+            if (!isset($data[$i])) {
+                $data[$i] = null;
+            }
+        }
+        ksort($data);
+
+        $this->writer->addRow($data);
     }
 }
