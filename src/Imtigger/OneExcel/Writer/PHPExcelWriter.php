@@ -29,7 +29,7 @@ class PHPExcelWriter extends OneExcelWriter implements OneExcelWriterInterface
         $this->sheet = $this->book->getActiveSheet();
     }
 
-    public function writeColumn($row_num, $column_num, $data, $data_type = null)
+    public function writeCell($row_num, $column_num, $data, $data_type = null)
     {
         $this->sheet->setCellValueExplicitByColumnAndRow($column_num, $row_num, $data, PHPExcel_Cell_DataType::TYPE_STRING);
     }

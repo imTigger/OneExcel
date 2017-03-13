@@ -29,7 +29,7 @@ class LibXLWriter extends OneExcelWriter implements OneExcelWriterInterface
         $this->sheet = $this->book->getSheet(0);
     }
 
-    public function writeColumn($row_num, $column_num, $data, $data_type = null)
+    public function writeCell($row_num, $column_num, $data, $data_type = null)
     {
         $this->sheet->write($row_num - 1, $column_num, $data);
     }

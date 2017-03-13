@@ -30,7 +30,7 @@ class SpoutWriter extends OneExcelWriter implements OneExcelWriterInterface
         throw new \Exception('SpoutWriter::load is not implemented');
     }
 
-    public function writeColumn($row_num, $column_num, $data, $data_type = null)
+    public function writeCell($row_num, $column_num, $data, $data_type = null)
     {
         if ($row_num < $this->last_row) {
             throw new \Exception('Row rewind is not supported in Spout');
