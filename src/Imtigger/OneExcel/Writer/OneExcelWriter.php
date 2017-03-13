@@ -35,31 +35,6 @@ abstract class OneExcelWriter implements OneExcelWriterInterface
         }
     }
 
-    protected function autoDetectInputFormat($filename, &$input_format)
-    {
-        if ($input_format == self::FORMAT_AUTO) {
-            $input_format = self::guessFormatFromFilename($filename);
-        }
-    }
-
-    protected function guessFormatFromFilename($filename)
-    {
-        $pathinfo = pathinfo($filename);
-
-        switch(strtolower($pathinfo['extension'])) {
-            case 'csv':
-                return OneExcelWriterInterface::FORMAT_CSV;
-            case 'xls':
-                return OneExcelWriterInterface::FORMAT_XLS;
-            case 'xlsx':
-                return OneExcelWriterInterface::FORMAT_XLSX;
-            case 'ods':
-                return OneExcelWriterInterface::FORMAT_ODS;
-            default:
-                throw new \Exception("Could not guess format for filename {$filename}");
-        }
-    }
-
     protected function getFormatMime($format)
     {
         switch ($format) {

@@ -29,7 +29,6 @@ class SpoutWriter extends OneExcelWriter implements OneExcelWriterInterface
 
     public function load($filename, $output_format = self::FORMAT_XLSX, $input_format = self::FORMAT_AUTO)
     {
-        $this->autoDetectInputFormat($filename, $input_format);
         $this->checkFormatSupported($output_format, $input_format);
 
         $this->input_format = $input_format;
