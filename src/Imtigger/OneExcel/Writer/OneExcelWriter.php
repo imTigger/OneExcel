@@ -26,7 +26,7 @@ abstract class OneExcelWriter implements OneExcelWriterInterface
             throw new \Exception("Input format and output format needed to be the same {$input_format} for " . static::class);
         }
 
-        if (!$this->isInputFormatSupported($input_format)) {
+        if ($input_format != null && !$this->isInputFormatSupported($input_format)) {
             throw new \Exception("Input format {$input_format} is not supported by " . static::class);
         }
 
