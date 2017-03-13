@@ -8,22 +8,24 @@ class LibXLWriter extends OneExcelWriter implements OneExcelWriterInterface
     public static $format_supported = [self::FORMAT_XLSX, self::FORMAT_XLS];
     private $book;
     private $sheet;
-    private $format;
+    private $input_format;
+    private $output_format;
 
-    public function create($format = self::FORMAT_XLSX)
+    public function create($output_format = self::FORMAT_XLSX)
     {
-        $this->checkFormatSupported($format);
-        $this->format = $format;
-        $this->book = new \ExcelBook(null, null, $this->format == self::FORMAT_XLSX);
+        $this->checkFormatSupported($output_format);
+        $this->output_format = $output_format;
+        $this->book = new \ExcelBook(null, null, $this->output_format == self::FORMAT_XLSX);
         $this->book->setLocale('UTF-8');
         $this->sheet = $this->book->addSheet('Sheet1');
     }
 
-    public function load($filename, $format = self::FORMAT_XLSX)
+    public function load($filename, $input_format = self::FORMAT_XLSX, $output_format = self::FORMAT_XLSX)
     {
-        $this->checkFormatSupported($format);
-        $this->format = $format;
-        $this->book = new \ExcelBook(null, null, $this->format == self::FORMAT_XLSX);
+        $this->checkFormatSupported($input_format);
+        $this->input_format = $input_format;
+        $this->output_format = $output_format;
+        $this->book = new \ExcelBook(null, null, $this->output_format == self::FORMAT_XLSX);
         $this->book->loadFile($filename);
         $this->book->setLocale('UTF-8');
         $this->sheet = $this->book->getSheet(0);
@@ -41,8 +43,8 @@ class LibXLWriter extends OneExcelWriter implements OneExcelWriterInterface
 
     public function download($filename)
     {
-        header('Content-Type: ' . $this->getFormatMime($this->format));
-        header('Content-Disposition: attachment; filename="libxl-' . $filename . '.' . $this->format . '"');
+        header('Content-Type: ' . $this->getFormatMime($this->output_format));
+        header('Content-Disposition: attachment; filename="libxl-' . $filename . '.' . $this->output_format . '"');
         header('Content-Transfer-Encoding: binary');
         header('Expires: 0');
         header('Pragma: no-cache');

@@ -7,17 +7,20 @@ abstract class OneExcelWriter implements OneExcelWriterInterface
 {
     public static $format_supported = [];
 
-    protected function isFormatSupported($format) {
+    protected function isFormatSupported($format)
+    {
         return in_array($format, static::$format_supported);
     }
 
-    protected function checkFormatSupported($format) {
+    protected function checkFormatSupported($format)
+    {
         if (!$this->isFormatSupported($format)) {
             throw new \Exception("Format {$format} is not supported by " . static::class);
         }
     }
 
-    protected function getFormatMime($format) {
+    protected function getFormatMime($format)
+    {
         switch ($format) {
             case self::FORMAT_XLSX:
                 return 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';

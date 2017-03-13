@@ -6,7 +6,8 @@ use Imtigger\OneExcel\Writer\PHPExcelWriter;
 
 class OneExcelWriterFactory
 {
-    public static function create($type = OneExcelWriterInterface::FORMAT_XLSX) {
+    public static function create($output_format = OneExcelWriterInterface::FORMAT_XLSX)
+    {
         if (class_exists('ExcelBook')) {
             return new LibXLWriter();
         } else {

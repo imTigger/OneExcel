@@ -9,24 +9,26 @@ class SpoutWriter extends OneExcelWriter implements OneExcelWriterInterface
 {
     public static $format_supported = [self::FORMAT_XLSX, self::FORMAT_CSV, self::FORMAT_ODS];
     private $writer;
-    private $format;
+    private $input_format;
+    private $output_format;
     private $last_row = -1;
     private $data = [];
     private $temp_file;
 
-    public function create($format = self::FORMAT_XLSX)
+    public function create($output_format = self::FORMAT_XLSX)
     {
-        $this->checkFormatSupported($format);
-        $this->format = $format;
+        $this->checkFormatSupported($output_format);
+        $this->output_format = $output_format;
         $this->temp_file = sys_get_temp_dir() . 'spout-' . time();
-        $this->writer = WriterFactory::create($format);
+        $this->writer = WriterFactory::create($output_format);
         $this->writer->openToFile($this->temp_file);
     }
 
-    public function load($filename, $format = self::FORMAT_XLSX)
+    public function load($filename, $input_format = self::FORMAT_XLSX, $output_format = self::FORMAT_XLSX)
     {
-        $this->checkFormatSupported($format);
-        $this->format = $format;
+        $this->checkFormatSupported($input_format);
+        $this->input_format = $input_format;
+        $this->output_format = $output_format;
         throw new \Exception('SpoutWriter::load is not implemented');
     }
 
@@ -66,8 +68,8 @@ class SpoutWriter extends OneExcelWriter implements OneExcelWriterInterface
     {
         $this->close();
 
-        header('Content-Type: ' . $this->getFormatMime($this->format));
-        header('Content-Disposition: attachment; filename="spout-' . $filename . '.' . $this->format . '"');
+        header('Content-Type: ' . $this->getFormatMime($this->output_format));
+        header('Content-Disposition: attachment; filename="spout-' . $filename . '.' . $this->output_format . '"');
         header('Content-Transfer-Encoding: binary');
         header('Expires: 0');
         header('Pragma: no-cache');
