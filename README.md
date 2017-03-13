@@ -5,7 +5,7 @@ PHP Excel read/write abstraction layer, support PHPExcel, LibXL and Spout
 
 ### Basic Usages
 
-```
+```php
 // $excel = OneExcelWriterFactory::create(); // Create Excel from scratch
 $excel = OneExcelWriterFactory::createFromFile('templates/manifest.xlsx'); // Create Excel from template
 
@@ -21,33 +21,33 @@ $excel->download('example.xlsx'); // Trigger download
 
 #### OneExcelWriterFactory
 
-```
+```php
 $writer = OneExcelWriterFactory::create($output_format = OneExcelWriterInterface::FORMAT_XLSX)
 ```
 
-```
+```php
 $writer = OneExcelWriterFactory::createFromFile($filename, $output_format = OneExcelWriterInterface::FORMAT_XLSX, $input_format = OneExcelWriterInterface::FORMAT_AUTO)
 ``` 
 
 #### OneExcelWriter
 
-```
+```php
 $writer->create($output_format = self::FORMAT_XLSX)
 ```
 
-```
+```php
 $writer->load($filename, $output_format = self::FORMAT_XLSX, $input_format = self::FORMAT_AUTO)
 ```
 
-```
+```php
 $writer->writeCell($row_num, $column_num, $data, $data_type = self::COLUMN_TYPE_STRING)
 ```
 
-```
+```php
 $writer->download($filename)
 ```
 
-```
+```php
 $writer->save($path)
 ```
 
