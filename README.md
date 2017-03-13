@@ -1,11 +1,22 @@
-# PHPExcel
+# OneExcel
 PHP Excel read/write abstraction layer, support PHPExcel, LibXL and Spout
+
+## Installation
+
+### Composer
+
+OneExcel can only be installed from [Composer](https://getcomposer.org/).
+
+Run the following command:
+```
+$ composer require imtigger/oneexcel
+```
 
 ## Writer
 
 ### Basic Usages
 
-```
+```php
 // $excel = OneExcelWriterFactory::create(); // Create Excel from scratch
 $excel = OneExcelWriterFactory::createFromFile('templates/manifest.xlsx'); // Create Excel from template
 
@@ -21,21 +32,35 @@ $excel->download('example.xlsx'); // Trigger download
 
 #### OneExcelWriterFactory
 
-```$writer = OneExcelWriterFactory::create($output_format = OneExcelWriterInterface::FORMAT_XLSX)```
+```php
+$writer = OneExcelWriterFactory::create($output_format = OneExcelWriterInterface::FORMAT_XLSX)
+```
 
-```$writer = OneExcelWriterFactory::createFromFile($filename, $output_format = OneExcelWriterInterface::FORMAT_XLSX, $input_format = OneExcelWriterInterface::FORMAT_AUTO)```
+```php
+$writer = OneExcelWriterFactory::createFromFile($filename, $output_format = OneExcelWriterInterface::FORMAT_XLSX, $input_format = OneExcelWriterInterface::FORMAT_AUTO)
+``` 
 
 #### OneExcelWriter
 
-```$writer->create($output_format = self::FORMAT_XLSX)```
+```php
+$writer->create($output_format = self::FORMAT_XLSX)
+```
 
-```$writer->load($filename, $output_format = self::FORMAT_XLSX, $input_format = self::FORMAT_AUTO)```
+```php
+$writer->load($filename, $output_format = self::FORMAT_XLSX, $input_format = self::FORMAT_AUTO)
+```
 
-```$writer->writeCell($row_num, $column_num, $data, $data_type = self::COLUMN_TYPE_STRING)```
+```php
+$writer->writeCell($row_num, $column_num, $data, $data_type = self::COLUMN_TYPE_STRING)
+```
 
-```$writer->download($filename)```
+```php
+$writer->download($filename)
+```
 
-```$writer->save($path)```
+```php
+$writer->save($path)
+```
 
 
 ## Reader
