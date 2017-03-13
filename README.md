@@ -21,21 +21,35 @@ $excel->download('example.xlsx'); // Trigger download
 
 #### OneExcelWriterFactory
 
-```$writer = OneExcelWriterFactory::create($output_format = OneExcelWriterInterface::FORMAT_XLSX)```
+```
+$writer = OneExcelWriterFactory::create($output_format = OneExcelWriterInterface::FORMAT_XLSX)
+```
 
-```$writer = OneExcelWriterFactory::createFromFile($filename, $output_format = OneExcelWriterInterface::FORMAT_XLSX, $input_format = OneExcelWriterInterface::FORMAT_AUTO)```
+```
+$writer = OneExcelWriterFactory::createFromFile($filename, $output_format = OneExcelWriterInterface::FORMAT_XLSX, $input_format = OneExcelWriterInterface::FORMAT_AUTO)
+``` 
 
 #### OneExcelWriter
 
-```$writer->create($output_format = self::FORMAT_XLSX)```
+```
+$writer->create($output_format = self::FORMAT_XLSX)
+```
 
-```$writer->load($filename, $output_format = self::FORMAT_XLSX, $input_format = self::FORMAT_AUTO)```
+```
+$writer->load($filename, $output_format = self::FORMAT_XLSX, $input_format = self::FORMAT_AUTO)
+```
 
-```$writer->writeCell($row_num, $column_num, $data, $data_type = self::COLUMN_TYPE_STRING)```
+```
+$writer->writeCell($row_num, $column_num, $data, $data_type = self::COLUMN_TYPE_STRING)
+```
 
-```$writer->download($filename)```
+```
+$writer->download($filename)
+```
 
-```$writer->save($path)```
+```
+$writer->save($path)
+```
 
 
 ## Reader
