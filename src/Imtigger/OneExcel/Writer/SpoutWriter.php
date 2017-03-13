@@ -1,15 +1,16 @@
 <?php
 namespace Imtigger\OneExcel\Writer;
 
+use Box\Spout\Writer\AbstractMultiSheetsWriter;
 use Imtigger\OneExcel\OneExcelWriterInterface;
 use Box\Spout\Writer\WriterFactory;
-use Box\Spout\Common\Type;
 
 class SpoutWriter extends OneExcelWriter implements OneExcelWriterInterface
 {
     public static $input_format_supported = [self::FORMAT_XLSX, self::FORMAT_CSV, self::FORMAT_ODS];
     public static $output_format_supported = [self::FORMAT_XLSX, self::FORMAT_CSV, self::FORMAT_ODS];
     public static $input_output_same_format = false;
+    /** @var AbstractMultiSheetsWriter $writer */
     private $writer;
     private $input_format;
     private $output_format;

@@ -72,5 +72,7 @@ abstract class OneExcelWriter implements OneExcelWriterInterface
             case self::FORMAT_ODS:
                 return 'application/vnd.oasis.opendocument.spreadsheet';
         }
+
+        throw new \Exception("Unknown format {$format}");
     }
 }
