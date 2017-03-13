@@ -1,6 +1,17 @@
 # OneExcel
 PHP Excel read/write abstraction layer, support PHPExcel, LibXL and Spout
 
+## Installation
+
+### Composer
+
+OneExcel can only be installed from [Composer](https://getcomposer.org/).
+
+Run the following command:
+```
+$ composer require imtigger/oneexcel
+```
+
 ## Writer
 
 ### Basic Usages
