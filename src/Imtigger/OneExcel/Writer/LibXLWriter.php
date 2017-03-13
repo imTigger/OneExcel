@@ -5,7 +5,9 @@ use Imtigger\OneExcel\OneExcelWriterInterface;
 
 class LibXLWriter extends OneExcelWriter implements OneExcelWriterInterface
 {
-    public static $format_supported = [self::FORMAT_XLSX, self::FORMAT_XLS];
+    public static $input_format_supported = [self::FORMAT_XLSX, self::FORMAT_XLS];
+    public static $output_format_supported = [self::FORMAT_XLSX, self::FORMAT_XLS];
+    public static $input_output_same_format = true;
     private $book;
     private $sheet;
     private $input_format;
@@ -20,11 +22,17 @@ class LibXLWriter extends OneExcelWriter implements OneExcelWriterInterface
         $this->sheet = $this->book->addSheet('Sheet1');
     }
 
-    public function load($filename, $input_format = self::FORMAT_XLSX, $output_format = self::FORMAT_XLSX)
+    public function load($filename, $output_format = self::FORMAT_XLSX, $input_format = self::FORMAT_AUTO)
     {
-        $this->checkFormatSupported($input_format);
+        $this->checkFormatSupported($output_format, $input_format);
+
+        if ($input_format == self::FORMAT_AUTO) {
+            $input_format = self::guessFormatFromFilename($filename);
+        }
+
         $this->input_format = $input_format;
         $this->output_format = $output_format;
+
         $this->book = new \ExcelBook(null, null, $this->output_format == self::FORMAT_XLSX);
         $this->book->loadFile($filename);
         $this->book->setLocale('UTF-8');

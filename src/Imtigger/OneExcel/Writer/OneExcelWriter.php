@@ -5,17 +5,51 @@ use Imtigger\OneExcel\OneExcelWriterInterface;
 
 abstract class OneExcelWriter implements OneExcelWriterInterface
 {
-    public static $format_supported = [];
+    public static $input_format_supported = [];
+    public static $output_format_supported = [];
+    public static $input_output_same_format;
 
-    protected function isFormatSupported($format)
+    protected function isInputFormatSupported($format)
     {
-        return in_array($format, static::$format_supported);
+        return in_array($format, static::$input_format_supported);
     }
 
-    protected function checkFormatSupported($format)
+
+    protected function isOutputFormatSupported($format)
     {
-        if (!$this->isFormatSupported($format)) {
-            throw new \Exception("Format {$format} is not supported by " . static::class);
+        return in_array($format, static::$output_format_supported);
+    }
+
+    protected function checkFormatSupported($output_format, $input_format)
+    {
+        if (static::$input_output_same_format == true && $input_format != null && $input_format != $output_format) {
+            throw new \Exception("Input format and output format needed to be the same {$input_format} for " . static::class);
+        }
+
+        if (!$this->isInputFormatSupported($input_format)) {
+            throw new \Exception("Input format {$input_format} is not supported by " . static::class);
+        }
+
+        if (!$this->isOutputFormatSupported($output_format)) {
+            throw new \Exception("Output format {$output_format} is not supported by " . static::class);
+        }
+    }
+
+    protected function guessFormatFromFilename($filename)
+    {
+        $pathinfo = pathinfo($filename);
+
+        switch(strtolower($pathinfo['extension'])) {
+            case 'csv':
+                return OneExcelWriterInterface::FORMAT_CSV;
+            case 'xls':
+                return OneExcelWriterInterface::FORMAT_XLS;
+            case 'xlsx':
+                return OneExcelWriterInterface::FORMAT_XLSX;
+            case 'ods':
+                return OneExcelWriterInterface::FORMAT_ODS;
+            default:
+                throw new Exception("Could not guess format for filename {$filename}");
         }
     }
 

@@ -7,7 +7,9 @@ use Box\Spout\Common\Type;
 
 class SpoutWriter extends OneExcelWriter implements OneExcelWriterInterface
 {
-    public static $format_supported = [self::FORMAT_XLSX, self::FORMAT_CSV, self::FORMAT_ODS];
+    public static $input_format_supported = [self::FORMAT_XLSX, self::FORMAT_CSV, self::FORMAT_ODS];
+    public static $output_format_supported = [self::FORMAT_XLSX, self::FORMAT_CSV, self::FORMAT_ODS];
+    public static $input_output_same_format = false;
     private $writer;
     private $input_format;
     private $output_format;
@@ -24,11 +26,17 @@ class SpoutWriter extends OneExcelWriter implements OneExcelWriterInterface
         $this->writer->openToFile($this->temp_file);
     }
 
-    public function load($filename, $input_format = self::FORMAT_XLSX, $output_format = self::FORMAT_XLSX)
+    public function load($filename, $output_format = self::FORMAT_XLSX, $input_format = self::FORMAT_AUTO)
     {
-        $this->checkFormatSupported($input_format);
+        $this->checkFormatSupported($output_format, $input_format);
+
+        if ($input_format == self::FORMAT_AUTO) {
+            $input_format = self::guessFormatFromFilename($filename);
+        }
+
         $this->input_format = $input_format;
         $this->output_format = $output_format;
+
         throw new \Exception('SpoutWriter::load is not implemented');
     }
 
