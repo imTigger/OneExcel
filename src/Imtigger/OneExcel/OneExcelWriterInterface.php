@@ -6,6 +6,11 @@ interface OneExcelWriterInterface
 {
     const COLUMN_TYPE_STRING = 0;
     const COLUMN_TYPE_NUMERIC = 1;
+    const COLUMN_TYPE_BOOLEAN = 2;
+    const COLUMN_TYPE_DATE = 3;
+    const COLUMN_TYPE_TIME = 4;
+    const COLUMN_TYPE_DATETIME = 5;
+    const COLUMN_TYPE_FORMULA = 6;
 
     const FORMAT_AUTO = 'AUTO';
     const FORMAT_XLSX = 'xlsx';
