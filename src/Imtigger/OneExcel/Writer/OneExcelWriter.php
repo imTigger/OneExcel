@@ -20,7 +20,7 @@ abstract class OneExcelWriter implements OneExcelWriterInterface
         return in_array($format, static::$output_format_supported);
     }
 
-    protected function checkFormatSupported($output_format, $input_format)
+    protected function checkFormatSupported($output_format, $input_format = null)
     {
         if (static::$input_output_same_format == true && $input_format != null && $input_format != $output_format) {
             throw new \Exception("Input format and output format needed to be the same {$input_format} for " . static::class);
@@ -56,7 +56,7 @@ abstract class OneExcelWriter implements OneExcelWriterInterface
             case 'ods':
                 return OneExcelWriterInterface::FORMAT_ODS;
             default:
-                throw new Exception("Could not guess format for filename {$filename}");
+                throw new \Exception("Could not guess format for filename {$filename}");
         }
     }
 
