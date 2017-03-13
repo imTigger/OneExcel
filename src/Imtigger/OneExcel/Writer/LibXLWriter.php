@@ -49,7 +49,7 @@ class LibXLWriter extends OneExcelWriter implements OneExcelWriterInterface
     public function download($filename)
     {
         header('Content-Type: ' . $this->getFormatMime($this->output_format));
-        header('Content-Disposition: attachment; filename="libxl-' . $filename . '.' . $this->output_format . '"');
+        header('Content-Disposition: attachment; filename="' . $filename . '"');
         header('Content-Transfer-Encoding: binary');
         header('Expires: 0');
         header('Pragma: no-cache');

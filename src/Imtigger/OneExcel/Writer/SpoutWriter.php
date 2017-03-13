@@ -75,7 +75,7 @@ class SpoutWriter extends OneExcelWriter implements OneExcelWriterInterface
         $this->close();
 
         header('Content-Type: ' . $this->getFormatMime($this->output_format));
-        header('Content-Disposition: attachment; filename="spout-' . $filename . '.' . $this->output_format . '"');
+        header('Content-Disposition: attachment; filename="' . $filename . '"');
         header('Content-Transfer-Encoding: binary');
         header('Expires: 0');
         header('Pragma: no-cache');
