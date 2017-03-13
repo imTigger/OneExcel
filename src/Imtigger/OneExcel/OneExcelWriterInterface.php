@@ -11,6 +11,7 @@ interface OneExcelWriterInterface
     const COLUMN_TYPE_TIME = 4;
     const COLUMN_TYPE_DATETIME = 5;
     const COLUMN_TYPE_FORMULA = 6;
+    const COLUMN_TYPE_NULL = 7;
 
     const FORMAT_AUTO = 'AUTO';
     const FORMAT_XLSX = 'xlsx';

@@ -39,9 +39,9 @@ class PHPExcelWriter extends OneExcelWriter implements OneExcelWriterInterface
         $this->sheet = $this->book->getActiveSheet();
     }
 
-    public function writeCell($row_num, $column_num, $data, $data_type = null)
+    public function writeCell($row_num, $column_num, $data, $data_type = self::COLUMN_TYPE_STRING)
     {
-        $this->sheet->setCellValueExplicitByColumnAndRow($column_num, $row_num, $data, PHPExcel_Cell_DataType::TYPE_STRING);
+        $this->sheet->setCellValueExplicitByColumnAndRow($column_num, $row_num, $data, $this->getColumnFormat($data_type));
     }
 
     public function download($filename)
@@ -77,5 +77,22 @@ class PHPExcelWriter extends OneExcelWriter implements OneExcelWriterInterface
                 return 'OOCalc';
         }
         throw new \Exception("Unknown format {$format}");
+    }
+
+    public function getColumnFormat($internal_format)
+    {
+        switch ($internal_format) {
+            case self::COLUMN_TYPE_STRING:
+                return PHPExcel_Cell_DataType::TYPE_STRING;
+            case self::COLUMN_TYPE_NUMERIC:
+                return PHPExcel_Cell_DataType::TYPE_NUMERIC;
+            case self::COLUMN_TYPE_BOOLEAN:
+                return PHPExcel_Cell_DataType::TYPE_BOOL;
+            case self::COLUMN_TYPE_FORMULA:
+                return PHPExcel_Cell_DataType::TYPE_FORMULA;
+            case self::COLUMN_TYPE_NULL:
+                return PHPExcel_Cell_DataType::TYPE_NULL;
+        }
+        return PHPExcel_Cell_DataType::TYPE_STRING;
     }
 }

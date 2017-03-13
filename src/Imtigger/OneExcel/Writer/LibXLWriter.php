@@ -36,9 +36,9 @@ class LibXLWriter extends OneExcelWriter implements OneExcelWriterInterface
         $this->sheet = $this->book->getSheet(0);
     }
 
-    public function writeCell($row_num, $column_num, $data, $data_type = null)
+    public function writeCell($row_num, $column_num, $data, $data_type = self::COLUMN_TYPE_STRING)
     {
-        $this->sheet->write($row_num - 1, $column_num, $data);
+        $this->sheet->write($row_num - 1, $column_num, $data, null, $this->getColumnFormat($data_type));
     }
 
     public function save($path)
@@ -56,5 +56,18 @@ class LibXLWriter extends OneExcelWriter implements OneExcelWriterInterface
 
         $this->save('php://output');
         exit;
+    }
+
+    public function getColumnFormat($internal_format)
+    {
+        switch ($internal_format) {
+            case self::COLUMN_TYPE_STRING:
+                return -1;
+            case self::COLUMN_TYPE_NUMERIC:
+                return ExcelFormat::AS_NUMERIC_STRING;
+            case self::COLUMN_TYPE_FORMULA:
+                return ExcelFormat::AS_FORMULA;
+        }
+        return -1;
     }
 }
