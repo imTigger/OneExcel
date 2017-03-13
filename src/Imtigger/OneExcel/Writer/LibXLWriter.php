@@ -64,9 +64,9 @@ class LibXLWriter extends OneExcelWriter implements OneExcelWriterInterface
             case self::COLUMN_TYPE_STRING:
                 return -1;
             case self::COLUMN_TYPE_NUMERIC:
-                return ExcelFormat::AS_NUMERIC_STRING;
+                return \ExcelFormat::AS_NUMERIC_STRING;
             case self::COLUMN_TYPE_FORMULA:
-                return ExcelFormat::AS_FORMULA;
+                return \ExcelFormat::AS_FORMULA;
         }
         return -1;
     }
