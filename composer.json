@@ -2,7 +2,7 @@
     "name": "imtigger/oneexcel",
     "description": "PHP Excel read/write abstraction layer, support PHPExcel, LibXL and Spout",
     "homepage": "https://github.com/imTigger/oneexcel",
-    "keywords": ["excel", "phpexcel", "libxl", "spout"],
+    "keywords": ["excel", "phpexcel", "libxl", "spout", "xls", "xlsx", "csv", "ods"],
     "license": "MIT",
     "authors": [
         {
