@@ -8,7 +8,9 @@ class LibXLWriter extends OneExcelWriter implements OneExcelWriterInterface
     public static $input_format_supported = [self::FORMAT_XLSX, self::FORMAT_XLS];
     public static $output_format_supported = [self::FORMAT_XLSX, self::FORMAT_XLS];
     public static $input_output_same_format = true;
+    /** @var \ExcelBook $book */
     private $book;
+    /** @var \ExcelSheet $sheet */
     private $sheet;
     private $input_format;
     private $output_format;
