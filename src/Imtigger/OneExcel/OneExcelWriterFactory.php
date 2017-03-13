@@ -64,6 +64,8 @@ class OneExcelWriterFactory
             }
         } else if (in_array($output_format, [OneExcelWriterInterface::FORMAT_CSV, OneExcelWriterInterface::FORMAT_ODS]) && $input_format == null) {
             return new SpoutWriter();
+        } else {
+            return new PHPExcelWriter();
         }
     }
 }
