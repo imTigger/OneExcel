@@ -35,6 +35,13 @@ abstract class OneExcelWriter implements OneExcelWriterInterface
         }
     }
 
+    protected function autoDetectInputFormat($filename, &$input_format)
+    {
+        if ($input_format == self::FORMAT_AUTO) {
+            $input_format = self::guessFormatFromFilename($filename);
+        }
+    }
+
     protected function guessFormatFromFilename($filename)
     {
         $pathinfo = pathinfo($filename);
