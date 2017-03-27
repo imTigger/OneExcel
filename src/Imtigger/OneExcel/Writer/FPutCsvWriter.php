@@ -20,7 +20,7 @@ class FPutCsvWriter extends OneExcelWriter implements OneExcelWriterInterface
     {
         $this->checkFormatSupported($output_format);
         $this->output_format = $output_format;
-        $this->temp_file = sys_get_temp_dir() . 'fputcsv-' . time();
+        $this->temp_file = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'fputcsv-' . time();
         $this->handle = fopen($this->temp_file, 'w');
     }
 

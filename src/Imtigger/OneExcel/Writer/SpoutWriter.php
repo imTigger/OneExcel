@@ -23,7 +23,7 @@ class SpoutWriter extends OneExcelWriter implements OneExcelWriterInterface
     {
         $this->checkFormatSupported($output_format);
         $this->output_format = $output_format;
-        $this->temp_file = sys_get_temp_dir() . 'spout-' . time();
+        $this->temp_file = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'spout-' . time();
         $this->writer = WriterFactory::create($output_format);
         $this->writer->openToFile($this->temp_file);
     }
