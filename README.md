@@ -3,7 +3,7 @@ PHP Excel read/write abstraction layer, support [PHPExcel](https://github.com/PH
 
 Targets to simplify server compatibility issue between Excel libraries.
 
-Ideal for simple-formatted but huge spreadsheet files 
+Ideal for simple-formatted but huge spreadsheet files
 
 ## Installation
 
@@ -32,7 +32,7 @@ $excel = OneExcelWriterFactory::createFromFile('templates/manifest.xlsx'); // Cr
 
 $excel->writeCell(1, 1, 'Hello');
 $excel->writeCell(2, 2, 'World');
-$excel->writeCell(3, 3, 3.141592653, OneExcelWriterInterface::COLUMN_TYPE_NUMERIC);
+$excel->writeCell(3, 3, 3.141592653, ColumnType::NUMERIC);
 
 // $excel->save('example.xlsx'); // Save to disk
 $excel->download('example.xlsx'); // Trigger download
@@ -43,25 +43,25 @@ $excel->download('example.xlsx'); // Trigger download
 #### OneExcelWriterFactory
 
 ```php
-$writer = OneExcelWriterFactory::create($output_format = OneExcelWriterInterface::FORMAT_XLSX)
+$writer = OneExcelWriterFactory::create($output_format = Format::XLSX)
 ```
 
 ```php
-$writer = OneExcelWriterFactory::createFromFile($filename, $output_format = OneExcelWriterInterface::FORMAT_XLSX, $input_format = OneExcelWriterInterface::FORMAT_AUTO)
-``` 
+$writer = OneExcelWriterFactory::createFromFile($filename, $output_format = Format::XLSX, $input_format = Format::AUTO)
+```
 
 #### OneExcelWriter
 
 ```php
-$writer->create($output_format = self::FORMAT_XLSX)
+$writer->create($output_format = Format::XLSX)
 ```
 
 ```php
-$writer->load($filename, $output_format = self::FORMAT_XLSX, $input_format = self::FORMAT_AUTO)
+$writer->load($filename, $output_format = Format::XLSX, $input_format = Format::AUTO)
 ```
 
 ```php
-$writer->writeCell($row_num, $column_num, $data, $data_type = self::COLUMN_TYPE_STRING)
+$writer->writeCell($row_num, $column_num, $data, $data_type = ColumnType::STRING)
 ```
 
 ```php
@@ -87,10 +87,11 @@ Not implemented yet
 - [x] Register to [Packagist](https://packagist.org/packages/imtigger/oneexcel)
 - [x] Emulate writeCell() behavior for Spout writer
 - [x] OneExcelWriterFactory auto create writers base on input/output format
+- [x] Refactor: Move constants to separate class
 - [ ] Implement $writer->writeRow($arr)
-- [x] Implement COLUMN_TYPE_NUMERIC, COLUMN_TYPE_FORMULA for all drivers
-- [ ] Implement COLUMN_TYPE_DATE, COLUMN_TYPE_TIME, COLUMN_TYPE_DATETIME for all drivers
-- [ ] Implement COLUMN_TYPE_BOOLEAN, COLUMN_TYPE_NULL for LibXL driver
-- [ ] Implement COLUMN_TYPE_* for Spout driver (Require upstream update)
+- [x] Implement ColumnType::NUMERIC, ColumnType::FORMULA for all drivers
+- [ ] Implement ColumnType::DATE, ColumnType::TIME, ColumnType::DATETIME for all drivers
+- [ ] Implement ColumnType::BOOLEAN, ColumnType::NULL for LibXL driver
+- [ ] Implement ColumnType::* for Spout driver (Require upstream update)
 - [ ] Implement sheet support
 - [ ] Implement Reader
