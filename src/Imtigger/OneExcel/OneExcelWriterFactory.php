@@ -8,17 +8,15 @@ use Imtigger\OneExcel\Writer\SpoutWriter;
 
 class OneExcelWriterFactory
 {
-    const DRIVERS = [Driver::PHPEXCEL, Driver::LIBXL, Driver::SPOUT, Driver::FPUTCSV];
-
-    public static function create($selector = Format::XLSX)
+    public static function create($format = Format::XLSX, $driverName = Driver::AUTO)
     {
-        if (in_array($selector, self::DRIVERS)) {
-            $driver = self::getDriver($selector);
-            $driver->create();
+        if ($driverName != Driver::AUTO) {
+            $driver = self::getDriverByName($driverName);
         } else {
-            $driver = self::getDriverByFormat($selector);
-            $driver->create($selector);
+            $driver = self::getDriverByFormat($format);
         }
+
+        $driver->create($format);
 
         return $driver;
     }
@@ -57,7 +55,7 @@ class OneExcelWriterFactory
         }
     }
 
-    private static function getDriver($driver) {
+    private static function getDriverByName($driver) {
         switch ($driver) {
             case Driver::PHPEXCEL:
                 return new PHPExcelWriter();

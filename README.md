@@ -27,9 +27,10 @@ $ composer require imtigger/oneexcel
 ### Basic Usages
 
 ```php
-// $excel = OneExcelWriterFactory::create(); // Create Excel from scratch
-// $excel = OneExcelWriterFactory::create(Driver::FPUTCSV); // Create using specifed driver
-$excel = OneExcelWriterFactory::createFromFile('templates/manifest.xlsx'); // Create Excel from template
+// $excel = OneExcelWriterFactory::create(); // Create empty sheet
+// $excel = OneExcelWriterFactory::create(Format::CSV); // Create empty sheet using specifed format
+// $excel = OneExcelWriterFactory::create(Format::CSV, Driver::FPUTCSV); // Create empty sheet using specifed driver
+$excel = OneExcelWriterFactory::createFromFile('templates/manifest.xlsx'); // Create sheet using template
 
 $excel->writeCell(1, 1, 'Hello');
 $excel->writeCell(2, 2, 'World');
