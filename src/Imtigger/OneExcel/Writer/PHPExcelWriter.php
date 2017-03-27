@@ -45,6 +45,11 @@ class PHPExcelWriter extends OneExcelWriter implements OneExcelWriterInterface
         $this->sheet->setCellValueExplicitByColumnAndRow($column_num, $row_num, $data, $this->getColumnFormat($data_type));
     }
 
+    public function writeRow($row_num, $data)
+    {
+        $this->sheet->fromArray($data, null, "A{$row_num}");
+    }
+
     public function download($filename)
     {
         header('Content-Type: ' . $this->getFormatMime($this->output_format));

@@ -37,13 +37,12 @@ class FPutCsvWriter extends OneExcelWriter implements OneExcelWriterInterface
     public function writeCell($row_num, $column_num, $data, $data_type = null)
     {
         if ($row_num < $this->last_row) {
-            throw new \Exception('Row rewind is not supported in fputcsv');
+            throw new \Exception("Writing row backward is not supported in fputcsv, was on row {$this->last_row}, trying to write row {$row_num}");
         }
 
         // Aggregate columns in same row
         if ($this->last_row != $row_num) {
-            $this->addRow($this->data);
-            $this->data = [];
+            $this->flushRow();
         }
 
         $this->data[$column_num] = $data;
@@ -51,10 +50,16 @@ class FPutCsvWriter extends OneExcelWriter implements OneExcelWriterInterface
         $this->last_row = $row_num;
     }
 
-    public function close()
+    public function writeRow($row_num, $data)
     {
-        // Write out last row
-        $this->addRow($this->data);
+        $this->flushRow();
+        $this->addRow($data);
+        $this->last_row += 1;
+    }
+
+    private function close()
+    {
+        $this->flushRow();
         fclose($this->handle);
     }
 
@@ -96,5 +101,13 @@ class FPutCsvWriter extends OneExcelWriter implements OneExcelWriterInterface
         ksort($data);
 
         fputcsv($this->handle, $data);
+    }
+
+    private function flushRow() {
+        if (!empty($this->data)) {
+            $this->addRow($this->data);
+            $this->last_row += 1;
+            $this->data = [];
+        }
     }
 }

@@ -1,5 +1,5 @@
 # OneExcel
-PHP Excel read/write abstraction layer, support [PHPExcel](https://github.com/PHPOffice/PHPExcel), [LibXL](https://github.com/iliaal/php_excel) and [Spout](https://github.com/box/spout)
+PHP Excel read/write abstraction layer, support [PHPExcel](https://github.com/PHPOffice/PHPExcel), [LibXL](https://github.com/iliaal/php_excel), [Spout](https://github.com/box/spout) and PHP `fputcsv`
 
 Targets to simplify server compatibility issue between Excel libraries.
 
@@ -33,6 +33,7 @@ $excel = OneExcelWriterFactory::createFromFile('templates/manifest.xlsx'); // Cr
 $excel->writeCell(1, 1, 'Hello');
 $excel->writeCell(2, 2, 'World');
 $excel->writeCell(3, 3, 3.141592653, ColumnType::NUMERIC);
+$excel->writeRow(4, ['One', 'Excel']);
 
 // $excel->save('example.xlsx'); // Save to disk
 $excel->download('example.xlsx'); // Trigger download
@@ -65,6 +66,10 @@ $writer->writeCell($row_num, $column_num, $data, $data_type = ColumnType::STRING
 ```
 
 ```php
+$writer->writeRow($row_num, $data)
+```
+
+```php
 $writer->download($filename)
 ```
 
@@ -81,14 +86,15 @@ Not implemented yet
 
 - Spout do not support random read/write rows (Upstream limitation, Won't fix)
 - Spout do not support formula (Upstream limitation, Won't fix)
+- fputcsv driver ignores all ColumnType::* (File-type limitation, Won't fix)
 
 ## TODO
 
 - [x] Register to [Packagist](https://packagist.org/packages/imtigger/oneexcel)
-- [x] Emulate writeCell() behavior for Spout writer
+- [x] Emulate writeCell() behavior for Spout/fuptcsv writer
 - [x] OneExcelWriterFactory auto create writers base on input/output format
 - [x] Refactor: Move constants to separate class
-- [ ] Implement $writer->writeRow($arr)
+- [x] Implement $writer->writeRow($arr)
 - [x] Implement ColumnType::NUMERIC, ColumnType::FORMULA for all drivers
 - [ ] Implement ColumnType::DATE, ColumnType::TIME, ColumnType::DATETIME for all drivers
 - [ ] Implement ColumnType::BOOLEAN, ColumnType::NULL for LibXL driver
