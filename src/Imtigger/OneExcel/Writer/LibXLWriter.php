@@ -1,12 +1,14 @@
 <?php
 namespace Imtigger\OneExcel\Writer;
 
+use Imtigger\OneExcel\ColumnType;
+use Imtigger\OneExcel\Format;
 use Imtigger\OneExcel\OneExcelWriterInterface;
 
 class LibXLWriter extends OneExcelWriter implements OneExcelWriterInterface
 {
-    public static $input_format_supported = [self::FORMAT_XLSX, self::FORMAT_XLS];
-    public static $output_format_supported = [self::FORMAT_XLSX, self::FORMAT_XLS];
+    public static $input_format_supported = [Format::XLSX, Format::XLS];
+    public static $output_format_supported = [Format::XLSX, Format::XLS];
     public static $input_output_same_format = true;
     /** @var \ExcelBook $book */
     private $book;
@@ -15,29 +17,29 @@ class LibXLWriter extends OneExcelWriter implements OneExcelWriterInterface
     private $input_format;
     private $output_format;
 
-    public function create($output_format = self::FORMAT_XLSX)
+    public function create($output_format = Format::XLSX)
     {
         $this->checkFormatSupported($output_format);
         $this->output_format = $output_format;
-        $this->book = new \ExcelBook(null, null, $this->output_format == self::FORMAT_XLSX);
+        $this->book = new \ExcelBook(null, null, $this->output_format == Format::XLSX);
         $this->book->setLocale('UTF-8');
         $this->sheet = $this->book->addSheet('Sheet1');
     }
 
-    public function load($filename, $output_format = self::FORMAT_XLSX, $input_format = self::FORMAT_AUTO)
+    public function load($filename, $output_format = Format::XLSX, $input_format = Format::AUTO)
     {
         $this->checkFormatSupported($output_format, $input_format);
 
         $this->input_format = $input_format;
         $this->output_format = $output_format;
 
-        $this->book = new \ExcelBook(null, null, $this->output_format == self::FORMAT_XLSX);
+        $this->book = new \ExcelBook(null, null, $this->output_format == Format::XLSX);
         $this->book->loadFile($filename);
         $this->book->setLocale('UTF-8');
         $this->sheet = $this->book->getSheet(0);
     }
 
-    public function writeCell($row_num, $column_num, $data, $data_type = self::COLUMN_TYPE_STRING)
+    public function writeCell($row_num, $column_num, $data, $data_type = ColumnType::STRING)
     {
         $this->sheet->write($row_num - 1, $column_num, $data, null, $this->getColumnFormat($data_type));
     }
@@ -62,11 +64,11 @@ class LibXLWriter extends OneExcelWriter implements OneExcelWriterInterface
     public function getColumnFormat($internal_format)
     {
         switch ($internal_format) {
-            case self::COLUMN_TYPE_STRING:
+            case ColumnType::STRING:
                 return -1;
-            case self::COLUMN_TYPE_NUMERIC:
+            case ColumnType::NUMERIC:
                 return \ExcelFormat::AS_NUMERIC_STRING;
-            case self::COLUMN_TYPE_FORMULA:
+            case ColumnType::FORMULA:
                 return \ExcelFormat::AS_FORMULA;
         }
         return -1;

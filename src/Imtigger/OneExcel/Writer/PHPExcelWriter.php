@@ -1,14 +1,16 @@
 <?php
 namespace Imtigger\OneExcel\Writer;
 
+use Imtigger\OneExcel\ColumnType;
+use Imtigger\OneExcel\Format;
 use Imtigger\OneExcel\OneExcelWriterInterface;
 use PHPExcel_Cell_DataType;
 use PHPExcel_IOFactory;
 
 class PHPExcelWriter extends OneExcelWriter implements OneExcelWriterInterface
 {
-    public static $input_format_supported = [self::FORMAT_XLSX, self::FORMAT_XLS, self::FORMAT_CSV, self::FORMAT_ODS];
-    public static $output_format_supported = [self::FORMAT_XLSX, self::FORMAT_XLS, self::FORMAT_CSV];
+    public static $input_format_supported = [Format::XLSX, Format::XLS, Format::CSV, Format::ODS];
+    public static $output_format_supported = [Format::XLSX, Format::XLS, Format::CSV];
     public static $input_output_same_format = false;
     /** @var \PHPExcel $book */
     private $book;
@@ -17,7 +19,7 @@ class PHPExcelWriter extends OneExcelWriter implements OneExcelWriterInterface
     private $input_format;
     private $output_format;
 
-    public function create($output_format = self::FORMAT_XLSX)
+    public function create($output_format = Format::XLSX)
     {
         $this->checkFormatSupported($output_format);
         $this->output_format = $output_format;
@@ -25,7 +27,7 @@ class PHPExcelWriter extends OneExcelWriter implements OneExcelWriterInterface
         $this->sheet = $this->book->getActiveSheet();
     }
 
-    public function load($filename, $output_format = self::FORMAT_XLSX, $input_format = self::FORMAT_AUTO)
+    public function load($filename, $output_format = Format::XLSX, $input_format = Format::AUTO)
     {
         $this->checkFormatSupported($output_format, $input_format);
 
@@ -38,7 +40,7 @@ class PHPExcelWriter extends OneExcelWriter implements OneExcelWriterInterface
         $this->sheet = $this->book->getActiveSheet();
     }
 
-    public function writeCell($row_num, $column_num, $data, $data_type = self::COLUMN_TYPE_STRING)
+    public function writeCell($row_num, $column_num, $data, $data_type = ColumnType::STRING)
     {
         $this->sheet->setCellValueExplicitByColumnAndRow($column_num, $row_num, $data, $this->getColumnFormat($data_type));
     }
@@ -66,13 +68,13 @@ class PHPExcelWriter extends OneExcelWriter implements OneExcelWriterInterface
     public function getFormatCode($format)
     {
         switch ($format) {
-            case self::FORMAT_XLSX:
+            case Format::XLSX:
                 return 'Excel2007';
-            case self::FORMAT_XLS:
+            case Format::XLS:
                 return 'Excel5';
-            case self::FORMAT_CSV:
+            case Format::CSV:
                 return 'CSV';
-            case self::FORMAT_ODS:
+            case Format::ODS:
                 return 'OOCalc';
         }
         throw new \Exception("Unknown format {$format}");
@@ -81,15 +83,15 @@ class PHPExcelWriter extends OneExcelWriter implements OneExcelWriterInterface
     public function getColumnFormat($internal_format)
     {
         switch ($internal_format) {
-            case self::COLUMN_TYPE_STRING:
+            case ColumnType::STRING:
                 return PHPExcel_Cell_DataType::TYPE_STRING;
-            case self::COLUMN_TYPE_NUMERIC:
+            case ColumnType::NUMERIC:
                 return PHPExcel_Cell_DataType::TYPE_NUMERIC;
-            case self::COLUMN_TYPE_BOOLEAN:
+            case ColumnType::BOOLEAN:
                 return PHPExcel_Cell_DataType::TYPE_BOOL;
-            case self::COLUMN_TYPE_FORMULA:
+            case ColumnType::FORMULA:
                 return PHPExcel_Cell_DataType::TYPE_FORMULA;
-            case self::COLUMN_TYPE_NULL:
+            case ColumnType::NULL:
                 return PHPExcel_Cell_DataType::TYPE_NULL;
         }
         return PHPExcel_Cell_DataType::TYPE_STRING;

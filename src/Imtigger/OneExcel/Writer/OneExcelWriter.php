@@ -1,6 +1,7 @@
 <?php
 namespace Imtigger\OneExcel\Writer;
 
+use Imtigger\OneExcel\Format;
 use Imtigger\OneExcel\OneExcelWriterInterface;
 
 abstract class OneExcelWriter implements OneExcelWriterInterface
@@ -38,13 +39,13 @@ abstract class OneExcelWriter implements OneExcelWriterInterface
     protected function getFormatMime($format)
     {
         switch ($format) {
-            case self::FORMAT_XLSX:
+            case Format::XLSX:
                 return 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
-            case self::FORMAT_XLS:
+            case Format::XLS:
                 return 'application/vnd.ms-excel';
-            case self::FORMAT_CSV:
+            case Format::CSV:
                 return 'text/csv';
-            case self::FORMAT_ODS:
+            case Format::ODS:
                 return 'application/vnd.oasis.opendocument.spreadsheet';
         }
 

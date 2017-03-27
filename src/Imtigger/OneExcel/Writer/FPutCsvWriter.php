@@ -1,31 +1,27 @@
 <?php
 namespace Imtigger\OneExcel\Writer;
 
-use Box\Spout\Writer\AbstractMultiSheetsWriter;
 use Imtigger\OneExcel\Format;
 use Imtigger\OneExcel\OneExcelWriterInterface;
-use Box\Spout\Writer\WriterFactory;
 
-class SpoutWriter extends OneExcelWriter implements OneExcelWriterInterface
+class FPutCsvWriter extends OneExcelWriter implements OneExcelWriterInterface
 {
-    public static $input_format_supported = [Format::XLSX, Format::CSV, Format::ODS];
-    public static $output_format_supported = [Format::XLSX, Format::CSV, Format::ODS];
+    public static $input_format_supported = [];
+    public static $output_format_supported = [Format::CSV];
     public static $input_output_same_format = false;
-    /** @var AbstractMultiSheetsWriter $writer */
-    private $writer;
     private $input_format;
     private $output_format;
     private $last_row = -1;
     private $data = [];
     private $temp_file;
+    private $handle;
 
-    public function create($output_format = Format::XLSX)
+    public function create($output_format = Format::CSV)
     {
         $this->checkFormatSupported($output_format);
         $this->output_format = $output_format;
-        $this->temp_file = sys_get_temp_dir() . 'spout-' . time();
-        $this->writer = WriterFactory::create($output_format);
-        $this->writer->openToFile($this->temp_file);
+        $this->temp_file = sys_get_temp_dir() . 'fputcsv-' . time();
+        $this->handle = fopen($this->temp_file, 'w');
     }
 
     public function load($filename, $output_format = Format::XLSX, $input_format = Format::AUTO)
@@ -35,13 +31,13 @@ class SpoutWriter extends OneExcelWriter implements OneExcelWriterInterface
         $this->input_format = $input_format;
         $this->output_format = $output_format;
 
-        throw new \Exception('SpoutWriter::load is not implemented');
+        throw new \Exception('FPutCsvWriter::load is not implemented');
     }
 
     public function writeCell($row_num, $column_num, $data, $data_type = null)
     {
         if ($row_num < $this->last_row) {
-            throw new \Exception('Row rewind is not supported in Spout');
+            throw new \Exception('Row rewind is not supported in fputcsv');
         }
 
         // Aggregate columns in same row
@@ -59,7 +55,7 @@ class SpoutWriter extends OneExcelWriter implements OneExcelWriterInterface
     {
         // Write out last row
         $this->addRow($this->data);
-        $this->writer->close();
+        fclose($this->handle);
     }
 
     public function save($path)
@@ -99,6 +95,6 @@ class SpoutWriter extends OneExcelWriter implements OneExcelWriterInterface
         }
         ksort($data);
 
-        $this->writer->addRow($data);
+        fputcsv($this->handle, $data);
     }
 }

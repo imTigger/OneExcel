@@ -1,23 +1,32 @@
 <?php
 namespace Imtigger\OneExcel;
 
+use Imtigger\OneExcel\Writer\FPutCsvWriter;
 use Imtigger\OneExcel\Writer\LibXLWriter;
 use Imtigger\OneExcel\Writer\PHPExcelWriter;
 use Imtigger\OneExcel\Writer\SpoutWriter;
 
 class OneExcelWriterFactory
 {
-    public static function create($output_format = OneExcelWriterInterface::FORMAT_XLSX)
+    const DRIVERS = [Driver::PHPEXCEL, Driver::LIBXL, Driver::SPOUT, Driver::FPUTCSV];
+
+    public static function create($selector = Format::XLSX)
     {
-        $driver = self::getDriver($output_format);
-        $driver->create($output_format);
+        if (in_array($selector, self::DRIVERS)) {
+            $driver = self::getDriver($selector);
+            $driver->create();
+        } else {
+            $driver = self::getDriverByFormat($selector);
+            $driver->create($selector);
+        }
+
         return $driver;
     }
 
-    public static function createFromFile($filename, $output_format = OneExcelWriterInterface::FORMAT_XLSX, $input_format = OneExcelWriterInterface::FORMAT_AUTO)
+    public static function createFromFile($filename, $output_format = Format::XLSX, $input_format = Format::AUTO)
     {
         self::autoDetectInputFormat($filename, $input_format);
-        $driver = self::getDriver($output_format, $input_format);
+        $driver = self::getDriverByFormat($output_format, $input_format);
         $driver->load($filename, $output_format, $input_format);
         return $driver;
     }
@@ -25,7 +34,7 @@ class OneExcelWriterFactory
 
     private static function autoDetectInputFormat($filename, &$input_format)
     {
-        if ($input_format == OneExcelWriterInterface::FORMAT_AUTO) {
+        if ($input_format == Format::AUTO) {
             $input_format = self::guessFormatFromFilename($filename);
         }
     }
@@ -36,21 +45,35 @@ class OneExcelWriterFactory
 
         switch(strtolower($pathinfo['extension'])) {
             case 'csv':
-                return OneExcelWriterInterface::FORMAT_CSV;
+                return Format::CSV;
             case 'xls':
-                return OneExcelWriterInterface::FORMAT_XLS;
+                return Format::XLS;
             case 'xlsx':
-                return OneExcelWriterInterface::FORMAT_XLSX;
+                return Format::XLSX;
             case 'ods':
-                return OneExcelWriterInterface::FORMAT_ODS;
+                return Format::ODS;
             default:
                 throw new \Exception("Could not guess format for filename {$filename}");
         }
     }
 
-    private static function getDriver($output_format, $input_format = null)
+    private static function getDriver($driver) {
+        switch ($driver) {
+            case Driver::PHPEXCEL:
+                return new PHPExcelWriter();
+            case Driver::LIBXL:
+                return new LibXLWriter();
+            case Driver::SPOUT:
+                return new SpoutWriter();
+            case Driver::FPUTCSV:
+                return new FPutCsvWriter();
+        }
+        throw new \Exception("Unknown driver {$driver}");
+    }
+
+    private static function getDriverByFormat($output_format, $input_format = null)
     {
-        if (in_array($output_format, [OneExcelWriterInterface::FORMAT_XLSX, OneExcelWriterInterface::FORMAT_XLS])) {
+        if (in_array($output_format, [Format::XLSX, Format::XLS])) {
             // If LibXL exists, consider it first
             if (class_exists('ExcelBook')) {
                 // LibXL support only when input format and output format are the same
@@ -62,7 +85,7 @@ class OneExcelWriterFactory
             } else {
                 return new PHPExcelWriter();
             }
-        } else if (in_array($output_format, [OneExcelWriterInterface::FORMAT_CSV, OneExcelWriterInterface::FORMAT_ODS]) && $input_format == null) {
+        } else if (in_array($output_format, [Format::CSV, Format::ODS]) && $input_format == null) {
             return new SpoutWriter();
         } else {
             return new PHPExcelWriter();
