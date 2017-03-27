@@ -31,6 +31,7 @@ $ composer require imtigger/oneexcel
 // $excel = OneExcelWriterFactory::create(Format::CSV); // Create empty sheet using specifed format
 // $excel = OneExcelWriterFactory::create(Format::CSV, Driver::FPUTCSV); // Create empty sheet using specifed driver
 $excel = OneExcelWriterFactory::createFromFile('templates/manifest.xlsx'); // Create sheet using template
+// $excel = OneExcelWriterFactory::createFromFile('templates/manifest.xlsx', Format::XLSX, Format::XLSX, Driver::LIBXL); // Create Excel from template specifing input/output format
 
 $excel->writeCell(1, 1, 'Hello');
 $excel->writeCell(2, 2, 'World');
@@ -46,11 +47,11 @@ $excel->download('example.xlsx'); // Trigger download
 #### OneExcelWriterFactory
 
 ```php
-$writer = OneExcelWriterFactory::create($output_format = Format::XLSX)
+$writer = OneExcelWriterFactory::create($format = Format::XLSX, $driverName = Driver::AUTO))
 ```
 
 ```php
-$writer = OneExcelWriterFactory::createFromFile($filename, $output_format = Format::XLSX, $input_format = Format::AUTO)
+$writer = createFromFile($filename, $output_format = Format::XLSX, $input_format = Format::AUTO, $driverName = Driver::AUTO)
 ```
 
 #### OneExcelWriter

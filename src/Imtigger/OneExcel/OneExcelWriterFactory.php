@@ -21,14 +21,17 @@ class OneExcelWriterFactory
         return $driver;
     }
 
-    public static function createFromFile($filename, $output_format = Format::XLSX, $input_format = Format::AUTO)
+    public static function createFromFile($filename, $output_format = Format::XLSX, $input_format = Format::AUTO, $driverName = Driver::AUTO)
     {
-        self::autoDetectInputFormat($filename, $input_format);
-        $driver = self::getDriverByFormat($output_format, $input_format);
+        if ($driverName != Driver::AUTO) {
+            $driver = self::getDriverByName($driverName);
+        } else {
+            self::autoDetectInputFormat($filename, $input_format);
+            $driver = self::getDriverByFormat($output_format, $input_format);
+        }
         $driver->load($filename, $output_format, $input_format);
         return $driver;
     }
-
 
     private static function autoDetectInputFormat($filename, &$input_format)
     {
