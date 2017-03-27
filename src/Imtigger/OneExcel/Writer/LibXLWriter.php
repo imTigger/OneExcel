@@ -44,6 +44,11 @@ class LibXLWriter extends OneExcelWriter implements OneExcelWriterInterface
         $this->sheet->write($row_num - 1, $column_num, $data, null, $this->getColumnFormat($data_type));
     }
 
+    public function writeRow($row_num, $data)
+    {
+        $this->sheet->writeRow($row_num - 1, $data);
+    }
+
     public function save($path)
     {
         $this->book->save($path);

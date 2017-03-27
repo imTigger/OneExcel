@@ -10,6 +10,8 @@ interface OneExcelWriterInterface
 
     public function writeCell($row_num, $column_num, $data, $data_type = ColumnType::STRING);
 
+    public function writeRow($row_num, $data);
+
     public function save($path);
 
     public function download($filename);
