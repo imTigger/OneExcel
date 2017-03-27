@@ -28,6 +28,7 @@ $ composer require imtigger/oneexcel
 
 ```php
 // $excel = OneExcelWriterFactory::create(); // Create Excel from scratch
+// $excel = OneExcelWriterFactory::create(Driver::FPUTCSV); // Create using specifed driver
 $excel = OneExcelWriterFactory::createFromFile('templates/manifest.xlsx'); // Create Excel from template
 
 $excel->writeCell(1, 1, 'Hello');
@@ -91,7 +92,7 @@ Not implemented yet
 ## TODO
 
 - [x] Register to [Packagist](https://packagist.org/packages/imtigger/oneexcel)
-- [x] Emulate writeCell() behavior for Spout/fuptcsv writer
+- [x] Emulate writeCell() behavior for Spout/fputcsv writer
 - [x] OneExcelWriterFactory auto create writers base on input/output format
 - [x] Refactor: Move constants to separate class
 - [x] Implement $writer->writeRow($arr)
