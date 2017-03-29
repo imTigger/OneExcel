@@ -4,6 +4,7 @@ namespace Imtigger\OneExcel\Writer;
 use Box\Spout\Writer\AbstractMultiSheetsWriter;
 use Imtigger\OneExcel\Format;
 use Imtigger\OneExcel\OneExcelWriterInterface;
+use Box\Spout\Reader\ReaderFactory;
 use Box\Spout\Writer\WriterFactory;
 
 class SpoutWriter extends OneExcelWriter implements OneExcelWriterInterface
@@ -15,7 +16,7 @@ class SpoutWriter extends OneExcelWriter implements OneExcelWriterInterface
     private $writer;
     private $input_format;
     private $output_format;
-    private $last_row = -1;
+    private $last_row = 0;
     private $data = [];
     private $temp_file;
 
@@ -28,20 +29,38 @@ class SpoutWriter extends OneExcelWriter implements OneExcelWriterInterface
         $this->writer->openToFile($this->temp_file);
     }
 
-    public function load($filename, $output_format = Format::XLSX, $input_format = Format::AUTO)
+    public function load($filename, $output_format = Format::XLSX, $input_format = Format::AUTO, $options = [])
     {
         $this->checkFormatSupported($output_format, $input_format);
 
         $this->input_format = $input_format;
         $this->output_format = $output_format;
 
-        throw new \Exception('SpoutWriter::load is not implemented');
+        $this->create($output_format);
+
+        // Copy data into new sheet
+        $reader = ReaderFactory::create($input_format);
+        $reader->open($filename);
+        $reader->setShouldFormatDates(true);
+
+        foreach ($reader->getSheetIterator() as $sheetIndex => $sheet) {
+            if ($sheetIndex !== 1) {
+                $this->writer->addNewSheetAndMakeItCurrent();
+            }
+
+            foreach ($sheet->getRowIterator() as $row) {
+                $this->writer->addRow($row);
+                $this->last_row += 1;
+            }
+        }
+
+        $reader->close();
     }
 
     public function writeCell($row_num, $column_num, $data, $data_type = null)
     {
         if ($row_num < $this->last_row) {
-            throw new \Exception("Writing row backward is not supported in Spout, was on row {$this->last_row}, trying to write row {$row_num}");
+            throw new \Exception("Writing row backward is not supported by Spout, was on row {$this->last_row}, trying to write row {$row_num}");
         }
 
         // Aggregate columns in same row

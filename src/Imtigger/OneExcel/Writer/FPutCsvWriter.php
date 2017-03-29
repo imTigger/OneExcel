@@ -6,12 +6,12 @@ use Imtigger\OneExcel\OneExcelWriterInterface;
 
 class FPutCsvWriter extends OneExcelWriter implements OneExcelWriterInterface
 {
-    public static $input_format_supported = [];
+    public static $input_format_supported = [Format::CSV];
     public static $output_format_supported = [Format::CSV];
-    public static $input_output_same_format = false;
+    public static $input_output_same_format = true;
     private $input_format;
     private $output_format;
-    private $last_row = -1;
+    private $last_row = 0;
     private $data = [];
     private $temp_file;
     private $handle;
@@ -31,13 +31,22 @@ class FPutCsvWriter extends OneExcelWriter implements OneExcelWriterInterface
         $this->input_format = $input_format;
         $this->output_format = $output_format;
 
-        throw new \Exception('FPutCsvWriter::load is not implemented');
+        if (($handle = fopen($filename, "r")) !== FALSE) {
+            $this->create($output_format);
+            while (($data = fgetcsv($handle)) !== FALSE) {
+                fputcsv($this->handle, $data);
+                $this->last_row += 1;
+            }
+            fclose($handle);
+        } else {
+            throw new \Exception("{$filename} cannot be opened.");
+        }
     }
 
     public function writeCell($row_num, $column_num, $data, $data_type = null)
     {
         if ($row_num < $this->last_row) {
-            throw new \Exception("Writing row backward is not supported in fputcsv, was on row {$this->last_row}, trying to write row {$row_num}");
+            throw new \Exception("Writing row backward is not supported by fputcsv, was on row {$this->last_row}, trying to write row {$row_num}");
         }
 
         // Aggregate columns in same row
