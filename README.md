@@ -97,6 +97,7 @@ Not implemented yet
 - [x] Emulate writeCell() behavior for Spout/fputcsv writer
 - [x] OneExcelWriterFactory auto create writers base on input/output format
 - [x] Refactor: Move constants to separate class
+- [x] Implement load() for SpoutWriter and FPutCsvWriter
 - [x] Implement $writer->writeRow($arr)
 - [x] Implement ColumnType::NUMERIC, ColumnType::FORMULA for all drivers
 - [ ] Implement ColumnType::DATE, ColumnType::TIME, ColumnType::DATETIME for all drivers
