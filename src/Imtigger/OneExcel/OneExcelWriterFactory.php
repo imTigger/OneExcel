@@ -18,11 +18,12 @@ class OneExcelWriterFactory
 
     public static function create($format = Format::XLSX, $driverName = Driver::AUTO)
     {
-        if (func_num_args() == 1) {
-            $factory = new OneExcelWriterFactory();
+        $factory = new OneExcelWriterFactory();
+        if (func_num_args() == 0) {
+            return $factory;
+        } else if (func_num_args() == 1) {
             return $factory->toFile('output.' . $format)->make();
         } else if (func_num_args() == 2) {
-            $factory = new OneExcelWriterFactory();
             return $factory->toFile('output.' . $format)->withDriver($driverName)->make();
         }
     }
@@ -32,9 +33,9 @@ class OneExcelWriterFactory
         $factory = new OneExcelWriterFactory();
 
         if (func_num_args() == 1) {
-            $_output_format = Format::AUTO;
-            $factory->autoDetectFormatFromFilename($_output_format, $filename);
-            return $factory->fromFile($filename)->outputFormat($_output_format)->make();
+            $auto_output_format = Format::AUTO;
+            $factory->autoDetectFormatFromFilename($auto_output_format, $filename);
+            return $factory->fromFile($filename)->outputFormat($auto_output_format)->make();
         } else if (func_num_args() == 2) {
             return $factory->fromFile($filename)->outputFormat($output_format)->make();
         } else if (func_num_args() == 3) {
@@ -42,11 +43,6 @@ class OneExcelWriterFactory
         } else if (func_num_args() == 4) {
             return $factory->fromFile($filename, $input_format)->outputFormat($output_format)->withDriver($driverName)->make();
         }
-    }
-
-    public function createBlank()
-    {
-        return new OneExcelWriterFactory();
     }
 
     public function fromFile($filename, $input_format = Format::AUTO)
