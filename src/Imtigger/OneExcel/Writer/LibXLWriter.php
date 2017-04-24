@@ -14,8 +14,6 @@ class LibXLWriter extends OneExcelWriter implements OneExcelWriterInterface
     private $book;
     /** @var \ExcelSheet $sheet */
     private $sheet;
-    private $input_format;
-    private $output_format;
 
     public function create($output_format = Format::XLSX)
     {

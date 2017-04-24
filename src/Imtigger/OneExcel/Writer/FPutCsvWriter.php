@@ -9,8 +9,6 @@ class FPutCsvWriter extends OneExcelWriter implements OneExcelWriterInterface
     public static $input_format_supported = [Format::CSV];
     public static $output_format_supported = [Format::CSV];
     public static $input_output_same_format = true;
-    private $input_format;
-    private $output_format;
     private $last_row = 0;
     private $data = [];
     private $temp_file;

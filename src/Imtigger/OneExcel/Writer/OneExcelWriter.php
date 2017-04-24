@@ -10,6 +10,9 @@ abstract class OneExcelWriter implements OneExcelWriterInterface
     public static $output_format_supported = [];
     public static $input_output_same_format;
 
+    protected $input_format;
+    protected $output_format;
+
     protected function isInputFormatSupported($format)
     {
         return in_array($format, static::$input_format_supported);
@@ -50,5 +53,10 @@ abstract class OneExcelWriter implements OneExcelWriterInterface
         }
 
         throw new \Exception("Unknown format {$format}");
+    }
+
+    public function getOutputExtension()
+    {
+        return $this->output_format;
     }
 }

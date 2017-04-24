@@ -14,8 +14,6 @@ class SpoutWriter extends OneExcelWriter implements OneExcelWriterInterface
     public static $input_output_same_format = false;
     /** @var AbstractMultiSheetsWriter $writer */
     private $writer;
-    private $input_format;
-    private $output_format;
     private $last_row = 0;
     private $data = [];
     private $temp_file;
