@@ -20,7 +20,7 @@ class OneExcelWriterFactory
     {
         $factory = new OneExcelWriterFactory();
         if (func_num_args() == 0) {
-            return $factory;
+            return $factory->createEmpty();
         } else if (func_num_args() == 1) {
             return $factory->toFile('output.' . $format)->make();
         } else if (func_num_args() == 2) {
@@ -43,6 +43,11 @@ class OneExcelWriterFactory
         } else if (func_num_args() == 4) {
             return $factory->fromFile($filename, $input_format)->outputFormat($output_format)->withDriver($driverName)->make();
         }
+    }
+
+    public function createEmpty()
+    {
+        return new OneExcelWriterFactory();
     }
 
     public function fromFile($filename, $input_format = Format::AUTO)
