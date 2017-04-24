@@ -60,9 +60,11 @@ abstract class OneExcelWriter implements OneExcelWriterInterface
 
     public function save($filename)
     {
-        $this->setOutputMode('file');
-        $this->setOutputFilename($filename);
         $this->output();
+
+        if ($this->output_filename != $filename) {
+            copy($this->output_filename, $filename);
+        }
     }
 
     public function download()

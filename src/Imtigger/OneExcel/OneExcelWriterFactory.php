@@ -30,16 +30,17 @@ class OneExcelWriterFactory
     public static function createFromFile($filename, $output_format = Format::XLSX, $input_format = Format::AUTO, $driverName = Driver::AUTO)
     {
         $factory = new OneExcelWriterFactory();
-        $pathinfo = pathinfo($filename);
 
         if (func_num_args() == 1) {
-            return $factory->fromFile($filename)->toFile($filename . '.' . $pathinfo['extension'])->make();
+            $_output_format = Format::AUTO;
+            $factory->autoDetectFormatFromFilename($_output_format, $filename);
+            return $factory->fromFile($filename)->outputFormat($_output_format)->make();
         } else if (func_num_args() == 2) {
-            return $factory->fromFile($filename)->toFile($filename. '.' . $output_format, $output_format)->make();
+            return $factory->fromFile($filename)->outputFormat($output_format)->make();
         } else if (func_num_args() == 3) {
-            return $factory->fromFile($filename, $input_format)->toFile($filename. '.' . $output_format, $output_format)->make();
+            return $factory->fromFile($filename, $input_format)->outputFormat($output_format)->make();
         } else if (func_num_args() == 4) {
-            return $factory->fromFile($filename, $input_format)->toFile($filename. '.' . $output_format, $output_format)->withDriver($driverName)->make();
+            return $factory->fromFile($filename, $input_format)->outputFormat($output_format)->withDriver($driverName)->make();
         }
     }
 
@@ -58,6 +59,12 @@ class OneExcelWriterFactory
         return $this;
     }
 
+    public function outputFormat($output_format) {
+        $this->output_format = $output_format;
+
+        return $this;
+    }
+
     public function withDriver($driver) {
         $this->driver = $driver;
         return $this;
@@ -68,8 +75,6 @@ class OneExcelWriterFactory
         $this->output_mode = 'file';
         $this->output_format = $format;
 
-        $this->autoDetectFormatFromFilename($this->output_format, $filename);
-
         return $this;
     }
 
@@ -77,8 +82,6 @@ class OneExcelWriterFactory
         $this->output_filename = $filename;
         $this->output_mode = 'stream';
         $this->output_format = $format;
-
-        $this->autoDetectFormatFromFilename($this->output_format, $filename);
 
         return $this;
     }
@@ -88,12 +91,14 @@ class OneExcelWriterFactory
         $this->output_mode = 'download';
         $this->output_format = $format;
 
-        $this->autoDetectFormatFromFilename($this->output_format, $filename);
-
         return $this;
     }
 
     public function make() {
+        if (!empty($this->output_filename)) {
+            $this->autoDetectFormatFromFilename($this->output_format, $this->output_filename);
+        }
+
         if ($this->driver !== null) {
             $driver = $this->getDriverByName($this->driver);
         } else {

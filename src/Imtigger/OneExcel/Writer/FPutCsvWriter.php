@@ -27,7 +27,7 @@ class FPutCsvWriter extends OneExcelWriter implements OneExcelWriterInterface
             header('Pragma: no-cache');
 
             $this->handle = fopen("php://output", 'w');
-        } elseif ($this->output_mode == 'download') {
+        } elseif ($this->output_mode == 'download' || $this->output_mode == null) {
             $this->temp_file = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'fputcsv-' . time() . '.tmp';
             $this->handle = fopen($this->temp_file, 'w');
         } elseif ($this->output_mode == 'file') {

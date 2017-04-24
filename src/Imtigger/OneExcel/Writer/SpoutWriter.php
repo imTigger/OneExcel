@@ -26,7 +26,7 @@ class SpoutWriter extends OneExcelWriter implements OneExcelWriterInterface
         $this->writer = WriterFactory::create($this->output_format);
         if ($this->output_mode == 'stream') {
             $this->writer->openToBrowser($this->output_filename);
-        } elseif ($this->output_mode == 'download') {
+        } elseif ($this->output_mode == 'download' || $this->output_mode == null) {
             $this->temp_file = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'spout-' . time() . '.tmp';
             $this->writer->openToFile($this->temp_file);
         } elseif ($this->output_mode == 'file') {
