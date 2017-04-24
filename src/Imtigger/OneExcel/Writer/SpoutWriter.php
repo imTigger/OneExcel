@@ -49,6 +49,10 @@ class SpoutWriter extends OneExcelWriter implements OneExcelWriterInterface
             }
 
             foreach ($sheet->getRowIterator() as $row) {
+                // Skip empty rows
+                if(!array_filter($row)) {
+                    continue;
+                }
                 $this->writer->addRow($row);
                 $this->last_row += 1;
             }

@@ -34,6 +34,10 @@ class FPutCsvWriter extends OneExcelWriter implements OneExcelWriterInterface
         if (($handle = fopen($filename, "r")) !== FALSE) {
             $this->create($output_format);
             while (($data = fgetcsv($handle)) !== FALSE) {
+                // Skip empty rows
+                if(!array_filter($row)) {
+                    continue;
+                }
                 fputcsv($this->handle, $data);
                 $this->last_row += 1;
             }
