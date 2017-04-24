@@ -16,6 +16,12 @@ class OneExcelWriterFactory
     private $input_filename;
     private $output_filename;
 
+    /**
+     * @param string $format
+     * @param string $driverName
+     * @return OneExcelWriterFactory|OneExcelWriter
+     * @deprecated Use ::createEmpty()
+     */
     public static function create($format = Format::XLSX, $driverName = Driver::AUTO)
     {
         $factory = new OneExcelWriterFactory();
@@ -28,6 +34,14 @@ class OneExcelWriterFactory
         }
     }
 
+    /**
+     * @param $filename
+     * @param string $output_format
+     * @param string $input_format
+     * @param string $driverName
+     * @return OneExcelWriter
+     * @deprecated Use ::fromFile()
+     */
     public static function createFromFile($filename, $output_format = Format::XLSX, $input_format = Format::AUTO, $driverName = Driver::AUTO)
     {
         $factory = new OneExcelWriterFactory();
@@ -45,11 +59,19 @@ class OneExcelWriterFactory
         }
     }
 
+    /**
+     * @return OneExcelWriterFactory
+     */
     public function createEmpty()
     {
         return new OneExcelWriterFactory();
     }
 
+    /**
+     * @param $filename
+     * @param string $input_format
+     * @return $this
+     */
     public function fromFile($filename, $input_format = Format::AUTO)
     {
         $this->input_filename = $filename;
@@ -60,17 +82,40 @@ class OneExcelWriterFactory
         return $this;
     }
 
+    /**
+     * @param $input_format
+     * @return $this
+     */
+    public function inputFormat($input_format) {
+        $this->input_format = $input_format;
+
+        return $this;
+    }
+
+    /**
+     * @param $output_format
+     * @return $this
+     */
     public function outputFormat($output_format) {
         $this->output_format = $output_format;
 
         return $this;
     }
 
+    /**
+     * @param $driver
+     * @return $this
+     */
     public function withDriver($driver) {
         $this->driver = $driver;
         return $this;
     }
 
+    /**
+     * @param $filename
+     * @param string $format
+     * @return $this
+     */
     public function toFile($filename, $format = Format::AUTO) {
         $this->output_filename = $filename;
         $this->output_mode = 'file';
@@ -79,6 +124,11 @@ class OneExcelWriterFactory
         return $this;
     }
 
+    /**
+     * @param $filename
+     * @param string $format
+     * @return $this
+     */
     public function toStream($filename, $format = Format::AUTO) {
         $this->output_filename = $filename;
         $this->output_mode = 'stream';
@@ -87,6 +137,11 @@ class OneExcelWriterFactory
         return $this;
     }
 
+    /**
+     * @param $filename
+     * @param string $format
+     * @return $this
+     */
     public function toDownload($filename, $format = Format::AUTO) {
         $this->output_filename = $filename;
         $this->output_mode = 'download';
@@ -95,6 +150,9 @@ class OneExcelWriterFactory
         return $this;
     }
 
+    /**
+     * @return OneExcelWriter
+     */
     public function make() {
         if (!empty($this->output_filename)) {
             $this->autoDetectFormatFromFilename($this->output_format, $this->output_filename);
@@ -121,6 +179,10 @@ class OneExcelWriterFactory
         return $driver_impl;
     }
 
+    /**
+     * @param $input_format
+     * @param $filename
+     */
     private function autoDetectFormatFromFilename(&$input_format, $filename)
     {
         if ($input_format == Format::AUTO) {
@@ -128,6 +190,11 @@ class OneExcelWriterFactory
         }
     }
 
+    /**
+     * @param $filename
+     * @return string
+     * @throws \Exception
+     */
     private function guessFormatFromFilename($filename)
     {
         $pathinfo = pathinfo($filename);
@@ -146,6 +213,11 @@ class OneExcelWriterFactory
         }
     }
 
+    /**
+     * @param $driver
+     * @return string
+     * @throws \Exception
+     */
     private function getDriverByName($driver) {
         switch ($driver) {
             case Driver::PHPEXCEL:
@@ -160,6 +232,11 @@ class OneExcelWriterFactory
         throw new \Exception("Unknown driver {$driver}");
     }
 
+    /**
+     * @param $output_format
+     * @param null $input_format
+     * @return string
+     */
     private function getDriverByFormat($output_format, $input_format = null)
     {
         if (in_array($output_format, [Format::XLSX, Format::XLS])) {
