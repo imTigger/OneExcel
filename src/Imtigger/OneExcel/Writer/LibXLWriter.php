@@ -56,14 +56,14 @@ class LibXLWriter extends OneExcelWriter implements OneExcelWriterInterface
             header('Expires: 0');
             header('Pragma: no-cache');
 
-            $this->save('php://output');
+            $this->saveFile('php://output');
         } elseif ($this->output_mode == 'file') {
-            $this->save($this->output_filename);
+            $this->saveFile($this->output_filename);
         }
     }
 
     /* Private helpers */
-    private function save($path)
+    private function saveFile($path)
     {
         $this->book->save($path);
     }

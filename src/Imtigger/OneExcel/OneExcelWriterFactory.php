@@ -16,7 +16,34 @@ class OneExcelWriterFactory
     private $input_filename;
     private $output_filename;
 
-    public static function create()
+    public static function create($format = Format::XLSX, $driverName = Driver::AUTO)
+    {
+        if (func_num_args() == 1) {
+            $factory = new OneExcelWriterFactory();
+            return $factory->toFile('output.' . $format)->make();
+        } else if (func_num_args() == 2) {
+            $factory = new OneExcelWriterFactory();
+            return $factory->toFile('output.' . $format)->withDriver($driverName)->make();
+        }
+    }
+
+    public static function createFromFile($filename, $output_format = Format::XLSX, $input_format = Format::AUTO, $driverName = Driver::AUTO)
+    {
+        $factory = new OneExcelWriterFactory();
+        $pathinfo = pathinfo($filename);
+
+        if (func_num_args() == 1) {
+            return $factory->fromFile($filename)->toFile($filename . '.' . $pathinfo['extension'])->make();
+        } else if (func_num_args() == 2) {
+            return $factory->fromFile($filename)->toFile($filename. '.' . $output_format, $output_format)->make();
+        } else if (func_num_args() == 3) {
+            return $factory->fromFile($filename, $input_format)->toFile($filename. '.' . $output_format, $output_format)->make();
+        } else if (func_num_args() == 4) {
+            return $factory->fromFile($filename, $input_format)->toFile($filename. '.' . $output_format, $output_format)->withDriver($driverName)->make();
+        }
+    }
+
+    public function createBlank()
     {
         return new OneExcelWriterFactory();
     }
@@ -26,7 +53,7 @@ class OneExcelWriterFactory
         $this->input_filename = $filename;
         $this->input_format = $input_format;
 
-        self::autoDetectFormatFromFilename($this->input_format, $filename);
+        $this->autoDetectFormatFromFilename($this->input_format, $filename);
 
         return $this;
     }
@@ -41,7 +68,7 @@ class OneExcelWriterFactory
         $this->output_mode = 'file';
         $this->output_format = $format;
 
-        self::autoDetectFormatFromFilename($this->output_format, $filename);
+        $this->autoDetectFormatFromFilename($this->output_format, $filename);
 
         return $this;
     }
@@ -51,7 +78,7 @@ class OneExcelWriterFactory
         $this->output_mode = 'stream';
         $this->output_format = $format;
 
-        self::autoDetectFormatFromFilename($this->output_format, $filename);
+        $this->autoDetectFormatFromFilename($this->output_format, $filename);
 
         return $this;
     }
@@ -61,7 +88,7 @@ class OneExcelWriterFactory
         $this->output_mode = 'download';
         $this->output_format = $format;
 
-        self::autoDetectFormatFromFilename($this->output_format, $filename);
+        $this->autoDetectFormatFromFilename($this->output_format, $filename);
 
         return $this;
     }
@@ -91,7 +118,7 @@ class OneExcelWriterFactory
     private function autoDetectFormatFromFilename(&$input_format, $filename)
     {
         if ($input_format == Format::AUTO) {
-            $input_format = self::guessFormatFromFilename($filename);
+            $input_format = $this->guessFormatFromFilename($filename);
         }
     }
 
@@ -134,17 +161,19 @@ class OneExcelWriterFactory
             if (class_exists('ExcelBook')) {
                 // LibXL support only when input format and output format are the same
                 if ($input_format == null || $input_format == $output_format) {
-                    return new LibXLWriter();
+                    return LibXLWriter::class;
                 } else {
-                    return new PHPExcelWriter();
+                    return PHPExcelWriter::class;
                 }
             } else {
-                return new PHPExcelWriter();
+                return PHPExcelWriter::class;
             }
         } else if (in_array($output_format, [Format::CSV, Format::ODS]) && $input_format == null) {
-            return new SpoutWriter();
+            return SpoutWriter::class;
+        }  else if (in_array($output_format, [Format::CSV, Format::ODS]) && in_array($input_format, [Format::ODS])) {
+            return SpoutWriter::class;
         } else {
-            return new PHPExcelWriter();
+            return PHPExcelWriter::class;
         }
     }
 }
