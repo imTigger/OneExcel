@@ -98,8 +98,6 @@ class FPutCsvWriter extends OneExcelWriter implements OneExcelWriterInterface
         echo file_get_contents($this->temp_file);
 
         @unlink($this->temp_file);
-
-        exit;
     }
 
     private function addRow($data) {

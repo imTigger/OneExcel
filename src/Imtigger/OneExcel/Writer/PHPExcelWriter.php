@@ -59,7 +59,6 @@ class PHPExcelWriter extends OneExcelWriter implements OneExcelWriterInterface
         header('Pragma: no-cache');
 
         $this->save('php://output');
-        exit;
     }
 
     public function save($path)
