@@ -3,44 +3,89 @@ namespace Imtigger\OneExcel;
 
 use Imtigger\OneExcel\Writer\FPutCsvWriter;
 use Imtigger\OneExcel\Writer\LibXLWriter;
+use Imtigger\OneExcel\Writer\OneExcelWriter;
 use Imtigger\OneExcel\Writer\PHPExcelWriter;
 use Imtigger\OneExcel\Writer\SpoutWriter;
 
 class OneExcelWriterFactory
 {
-    public static function create($format = Format::XLSX, $driverName = Driver::AUTO)
+    private $driver;
+    private $input_format;
+    private $output_format;
+    private $output_mode;
+    private $input_filename;
+    private $output_filename;
+
+    public static function create()
     {
-        if ($driverName != Driver::AUTO) {
-            $driver = self::getDriverByName($driverName);
-        } else {
-            $driver = self::getDriverByFormat($format);
-        }
-
-        $driver->create($format);
-
-        return $driver;
+        return new OneExcelWriterFactory();
     }
 
-    public static function createFromFile($filename, $output_format = Format::XLSX, $input_format = Format::AUTO, $driverName = Driver::AUTO)
+    public function fromFile($filename, $input_format = Format::AUTO)
     {
-        if ($driverName != Driver::AUTO) {
-            $driver = self::getDriverByName($driverName);
-        } else {
-            self::autoDetectInputFormat($filename, $input_format);
-            $driver = self::getDriverByFormat($output_format, $input_format);
-        }
-        $driver->load($filename, $output_format, $input_format);
-        return $driver;
+        $this->input_filename = $filename;
+        $this->input_format = $input_format;
+
+        self::autoDetectFormatFromFilename($this->input_format, $filename);
+
+        return $this;
     }
 
-    private static function autoDetectInputFormat($filename, &$input_format)
+    public function withDriver($driver) {
+        $this->driver = $driver;
+        return $this;
+    }
+
+    public function toFile($filename, $format = Format::AUTO) {
+        $this->output_filename = $filename;
+        $this->output_mode = 'file';
+        $this->output_format = $format;
+
+        self::autoDetectFormatFromFilename($this->output_format, $filename);
+
+        return $this;
+    }
+
+    public function toDownload($filename, $format = Format::AUTO) {
+        $this->output_filename = $filename;
+        $this->output_mode = 'download';
+        $this->output_format = $format;
+
+        self::autoDetectFormatFromFilename($this->output_format, $filename);
+
+        return $this;
+    }
+
+    public function make() {
+        if ($this->driver !== null) {
+            $driver = $this->getDriverByName($this->driver);
+        } else {
+            $driver = $this->getDriverByFormat($this->output_format, $this->input_format);
+        }
+
+        /** @var OneExcelWriter $driver_impl */
+        $driver_impl = new $driver;
+
+        $driver_impl->setOutputMode($this->output_mode);
+        $driver_impl->setOutputFilename($this->output_filename);
+
+        if ($this->input_filename == null) {
+            $driver_impl->create($this->output_format);
+        } else {
+            $driver_impl->load($this->input_filename, $this->output_format, $this->input_format);
+        }
+
+        return $driver_impl;
+    }
+
+    private function autoDetectFormatFromFilename(&$input_format, $filename)
     {
         if ($input_format == Format::AUTO) {
             $input_format = self::guessFormatFromFilename($filename);
         }
     }
 
-    private static function guessFormatFromFilename($filename)
+    private function guessFormatFromFilename($filename)
     {
         $pathinfo = pathinfo($filename);
 
@@ -58,21 +103,21 @@ class OneExcelWriterFactory
         }
     }
 
-    private static function getDriverByName($driver) {
+    private function getDriverByName($driver) {
         switch ($driver) {
             case Driver::PHPEXCEL:
-                return new PHPExcelWriter();
+                return PHPExcelWriter::class;
             case Driver::LIBXL:
-                return new LibXLWriter();
+                return LibXLWriter::class;
             case Driver::SPOUT:
-                return new SpoutWriter();
+                return SpoutWriter::class;
             case Driver::FPUTCSV:
-                return new FPutCsvWriter();
+                return FPutCsvWriter::class;
         }
         throw new \Exception("Unknown driver {$driver}");
     }
 
-    private static function getDriverByFormat($output_format, $input_format = null)
+    private function getDriverByFormat($output_format, $input_format = null)
     {
         if (in_array($output_format, [Format::XLSX, Format::XLS])) {
             // If LibXL exists, consider it first

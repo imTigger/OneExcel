@@ -11,23 +11,32 @@ class FPutCsvWriter extends OneExcelWriter implements OneExcelWriterInterface
     public static $input_output_same_format = true;
     private $last_row = 0;
     private $data = [];
-    private $temp_file;
     private $handle;
 
     public function create($output_format = Format::CSV)
     {
         $this->checkFormatSupported($output_format);
         $this->output_format = $output_format;
-        $this->temp_file = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'fputcsv-' . time();
-        $this->handle = fopen($this->temp_file, 'w');
+
+        if ($this->output_mode == 'download') {
+            header('Content-Type: ' . $this->getFormatMime($this->output_format));
+            header('Content-Disposition: attachment; filename="' . $this->output_filename . '"');
+            header('Content-Transfer-Encoding: binary');
+            header('Expires: 0');
+            header('Pragma: no-cache');
+
+            $this->handle = fopen("php://output", 'w');
+        } elseif ($this->output_mode == 'file') {
+            $this->handle = fopen($this->output_filename, 'w');
+        }
     }
 
-    public function load($filename, $output_format = Format::XLSX, $input_format = Format::AUTO)
+    public function load($filename, $output_format = Format::CSV, $input_format = Format::CSV)
     {
         $this->checkFormatSupported($output_format, $input_format);
-
         $this->input_format = $input_format;
-        $this->output_format = $output_format;
+
+        $this->create($output_format);
 
         if (($handle = fopen($filename, "r")) !== FALSE) {
             $this->create($output_format);
@@ -68,34 +77,34 @@ class FPutCsvWriter extends OneExcelWriter implements OneExcelWriterInterface
         $this->last_row += 1;
     }
 
+    public function output()
+    {
+        $this->close();
+
+        if ($this->output_mode == 'download') {
+            header('Content-Type: ' . $this->getFormatMime($this->output_format));
+            header('Content-Disposition: attachment; filename="' . $this->output_filename . '"');
+            header('Content-Transfer-Encoding: binary');
+            header('Expires: 0');
+            header('Pragma: no-cache');
+            header('Content-Length: ' . filesize($this->temp_file));
+
+            echo file_get_contents($this->temp_file);
+            //unlink($this->temp_file);
+        }
+    }
+
+    public function download()
+    {
+        $this->output_mode = 'download';
+        $this->output();
+    }
+
+    /* Private helpers */
     private function close()
     {
         $this->flushRow();
         fclose($this->handle);
-    }
-
-    public function save($path)
-    {
-        $this->close();
-
-        @copy($this->temp_file, $path);
-
-        @unlink($this->temp_file);
-    }
-
-    public function download($filename)
-    {
-        $this->close();
-
-        header('Content-Type: ' . $this->getFormatMime($this->output_format));
-        header('Content-Disposition: attachment; filename="' . $filename . '"');
-        header('Content-Transfer-Encoding: binary');
-        header('Expires: 0');
-        header('Pragma: no-cache');
-
-        echo file_get_contents($this->temp_file);
-
-        @unlink($this->temp_file);
     }
 
     private function addRow($data) {

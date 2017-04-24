@@ -21,6 +21,7 @@ class PHPExcelWriter extends OneExcelWriter implements OneExcelWriterInterface
     {
         $this->checkFormatSupported($output_format);
         $this->output_format = $output_format;
+
         $this->book = new \PHPExcel();
         $this->sheet = $this->book->getActiveSheet();
     }
@@ -48,18 +49,23 @@ class PHPExcelWriter extends OneExcelWriter implements OneExcelWriterInterface
         $this->sheet->fromArray($data, null, "A{$row_num}");
     }
 
-    public function download($filename)
+    public function output()
     {
-        header('Content-Type: ' . $this->getFormatMime($this->output_format));
-        header('Content-Disposition: attachment; filename="' . $filename . '"');
-        header('Content-Transfer-Encoding: binary');
-        header('Expires: 0');
-        header('Pragma: no-cache');
+        if ($this->output_mode == 'download') {
+            header('Content-Type: ' . $this->getFormatMime($this->output_format));
+            header('Content-Disposition: attachment; filename="' . $this->output_filename . '"');
+            header('Content-Transfer-Encoding: binary');
+            header('Expires: 0');
+            header('Pragma: no-cache');
 
-        $this->save('php://output');
+            $this->save('php://output');
+        } elseif ($this->output_mode == 'file') {
+            $this->save($this->output_filename);
+        }
     }
 
-    public function save($path)
+    /* Private helpers */
+    private function save($path)
     {
         /** @var \PHPExcel_Writer_Abstract $objWriter */
         $objWriter = PHPExcel_IOFactory::createWriter($this->book, $this->getFormatCode($this->output_format));
@@ -67,7 +73,7 @@ class PHPExcelWriter extends OneExcelWriter implements OneExcelWriterInterface
         $objWriter->save($path);
     }
 
-    public function getFormatCode($format)
+    private function getFormatCode($format)
     {
         switch ($format) {
             case Format::XLSX:
@@ -82,7 +88,7 @@ class PHPExcelWriter extends OneExcelWriter implements OneExcelWriterInterface
         throw new \Exception("Unknown format {$format}");
     }
 
-    public function getColumnFormat($internal_format)
+    private function getColumnFormat($internal_format)
     {
         switch ($internal_format) {
             case ColumnType::STRING:

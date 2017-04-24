@@ -12,7 +12,5 @@ interface OneExcelWriterInterface
 
     public function writeRow($row_num, $data);
 
-    public function save($path);
-
-    public function download($filename);
+    public function output();
 }
