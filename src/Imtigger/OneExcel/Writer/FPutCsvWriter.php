@@ -12,13 +12,14 @@ class FPutCsvWriter extends OneExcelWriter implements OneExcelWriterInterface
     private $last_row = 0;
     private $data = [];
     private $handle;
+    private $temp_file;
 
     public function create($output_format = Format::CSV)
     {
         $this->checkFormatSupported($output_format);
         $this->output_format = $output_format;
 
-        if ($this->output_mode == 'download') {
+        if ($this->output_mode == 'stream') {
             header('Content-Type: ' . $this->getFormatMime($this->output_format));
             header('Content-Disposition: attachment; filename="' . $this->output_filename . '"');
             header('Content-Transfer-Encoding: binary');
@@ -26,6 +27,9 @@ class FPutCsvWriter extends OneExcelWriter implements OneExcelWriterInterface
             header('Pragma: no-cache');
 
             $this->handle = fopen("php://output", 'w');
+        } elseif ($this->output_mode == 'download') {
+            $this->temp_file = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'fputcsv-' . time() . '.tmp';
+            $this->handle = fopen($this->temp_file, 'w');
         } elseif ($this->output_mode == 'file') {
             $this->handle = fopen($this->output_filename, 'w');
         }

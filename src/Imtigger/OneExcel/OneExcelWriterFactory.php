@@ -46,6 +46,16 @@ class OneExcelWriterFactory
         return $this;
     }
 
+    public function toStream($filename, $format = Format::AUTO) {
+        $this->output_filename = $filename;
+        $this->output_mode = 'stream';
+        $this->output_format = $format;
+
+        self::autoDetectFormatFromFilename($this->output_format, $filename);
+
+        return $this;
+    }
+
     public function toDownload($filename, $format = Format::AUTO) {
         $this->output_filename = $filename;
         $this->output_mode = 'download';
