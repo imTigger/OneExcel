@@ -57,22 +57,7 @@ abstract class OneExcelWriter implements OneExcelWriterInterface
 
         throw new \Exception("Unknown format {$format}");
     }
-
-    public function save($filename)
-    {
-        $this->output();
-
-        if ($this->output_filename != $filename) {
-            copy($this->output_filename, $filename);
-        }
-    }
-
-    public function download()
-    {
-        $this->setOutputMode('download');
-        $this->output();
-    }
-
+    
     public function setOutputMode($mode)
     {
         $this->output_mode = $mode;
