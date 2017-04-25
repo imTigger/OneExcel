@@ -22,7 +22,7 @@ final class LibXLTest extends TestCase {
 
     public function testDependency()
     {
-        if (extension_loaded('excel')) {
+        if (!extension_loaded('excel')) {
             $this->markTestSkipped(
                 'The LibXL extension is not available.'
             );
