@@ -1,5 +1,6 @@
 # OneExcel
 
+[![Build Status](https://travis-ci.org/imTigger/OneExcel.svg?branch=master)](https://travis-ci.org/imTigger/OneExcel)
 [![Latest Stable Version](https://poser.pugx.org/imtigger/oneexcel/v/stable)](https://packagist.org/packages/imtigger/oneexcel)
 [![Latest Unstable Version](https://poser.pugx.org/imtigger/oneexcel/v/unstable)](https://packagist.org/packages/imtigger/oneexcel)
 [![Total Downloads](https://poser.pugx.org/imtigger/oneexcel/downloads)](https://packagist.org/packages/imtigger/oneexcel)
