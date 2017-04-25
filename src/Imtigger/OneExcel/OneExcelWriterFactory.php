@@ -20,7 +20,6 @@ class OneExcelWriterFactory
      * @param string $format
      * @param string $driverName
      * @return OneExcelWriterFactory|OneExcelWriter
-     * @deprecated Use ::createEmpty()
      */
     public static function create($format = Format::XLSX, $driverName = Driver::AUTO)
     {
@@ -57,14 +56,6 @@ class OneExcelWriterFactory
         } else if (func_num_args() == 4) {
             return $factory->fromFile($filename, $input_format)->outputFormat($output_format)->withDriver($driverName)->make();
         }
-    }
-
-    /**
-     * @return OneExcelWriterFactory
-     */
-    public function createEmpty()
-    {
-        return new OneExcelWriterFactory();
     }
 
     /**
