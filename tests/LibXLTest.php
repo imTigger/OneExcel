@@ -20,6 +20,18 @@ final class LibXLTest extends TestCase {
         return $value;
     }
 
+    public function testDependency()
+    {
+        if (extension_loaded('excel')) {
+            $this->markTestSkipped(
+                'The LibXL extension is not available.'
+            );
+        }
+    }
+
+    /**
+     * @depends testDependency
+     */
     public function testCreate()
     {
         $path = 'tests/test-libxl.xlsx';
@@ -45,6 +57,9 @@ final class LibXLTest extends TestCase {
         unlink($path);
     }
 
+    /**
+     * @depends testDependency
+     */
     public function testTemplate()
     {
         $template = __DIR__ . '/../templates/template.xlsx';
