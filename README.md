@@ -15,7 +15,7 @@ Ideal for simple-formatted but huge spreadsheet files
 
 ### Requirements
 
-- PHP >= 5.6
+- PHP >= 5.6.4
 - `php_zip`, `php_xmlreader`, `php_simplexml` enabled
 - (Recommended) LibXL installed & `php_excel` enabled
 
@@ -36,7 +36,6 @@ $ composer require imtigger/oneexcel
 
 ```php
 $excel = OneExcelWriterFactory::create()
-        ->create()
         ->toFile('excel.xlsx')
         ->make();
         
@@ -52,9 +51,8 @@ $excel->output();
 
 ```php
 $excel = OneExcelWriterFactory::create()
-        ->create()
         ->fromFile('template.xlsx', Format::XLSX)
-        ->toFile('excel.xlsx', Format::CSV)
+        ->toStream('excel.csv', Format::CSV)
         ->withDriver(Driver::SPOUT)
         ->make();
         
