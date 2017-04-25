@@ -22,7 +22,8 @@ final class PHPExcelTest extends TestCase {
 
     public function testCreateXLSX()
     {
-        $excel = \Imtigger\OneExcel\OneExcelWriterFactory::create(Format::XLSX, Driver::PHPEXCEL);
+        $path = 'tests/test-phpexcel.xlsx';
+        $excel = \Imtigger\OneExcel\OneExcelWriterFactory::create()->toFile($path)->withDriver(Driver::PHPEXCEL)->make();
         $this->assertInstanceOf(\Imtigger\OneExcel\Writer\PHPExcelWriter::class, $excel);
 
         $excel->writeCell(1, 0, 'Hello');
@@ -30,9 +31,7 @@ final class PHPExcelTest extends TestCase {
         $excel->writeCell(3, 2, 3.141592653, ColumnType::NUMERIC);
         $excel->writeRow(4, ['One', 'Excel']);
 
-        $path = 'tests/test-phpexcel.xlsx';
-
-        $excel->save($path);
+        $excel->output();
 
         $this->assertFileExists($path);
         $this->assertGreaterThan(0, filesize($path));

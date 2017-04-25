@@ -22,7 +22,8 @@ final class SpoutTest extends TestCase {
 
     public function testCreateXLSX()
     {
-        $excel = \Imtigger\OneExcel\OneExcelWriterFactory::create(Format::XLSX, Driver::SPOUT);
+        $path = 'tests/test-spout.xlsx';
+        $excel = \Imtigger\OneExcel\OneExcelWriterFactory::create()->toFile($path)->withDriver(Driver::SPOUT)->make();
         $this->assertInstanceOf(\Imtigger\OneExcel\Writer\SpoutWriter::class, $excel);
 
         $excel->writeCell(1, 0, 'Hello');
@@ -30,9 +31,7 @@ final class SpoutTest extends TestCase {
         $excel->writeCell(3, 2, 3.141592653, ColumnType::NUMERIC);
         $excel->writeRow(4, ['One', 'Excel']);
 
-        $path = 'tests/test-spout.xlsx';
-
-        $excel->save($path);
+        $excel->output();
 
         $this->assertFileExists($path);
         $this->assertGreaterThan(0, filesize($path));
