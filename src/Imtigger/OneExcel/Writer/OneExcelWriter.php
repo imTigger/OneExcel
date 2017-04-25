@@ -13,6 +13,9 @@ abstract class OneExcelWriter implements OneExcelWriterInterface
     protected $input_format;
     protected $output_format;
 
+    protected $output_mode = 'file';
+    protected $output_filename;
+
     protected function isInputFormatSupported($format)
     {
         return in_array($format, static::$input_format_supported);
@@ -53,6 +56,16 @@ abstract class OneExcelWriter implements OneExcelWriterInterface
         }
 
         throw new \Exception("Unknown format {$format}");
+    }
+    
+    public function setOutputMode($mode)
+    {
+        $this->output_mode = $mode;
+    }
+
+    public function setOutputFilename($output_filename)
+    {
+        $this->output_filename = $output_filename;
     }
 
     public function getOutputExtension()

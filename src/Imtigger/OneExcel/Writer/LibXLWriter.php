@@ -47,23 +47,28 @@ class LibXLWriter extends OneExcelWriter implements OneExcelWriterInterface
         $this->sheet->writeRow($row_num - 1, $data);
     }
 
-    public function save($path)
+    public function output()
+    {
+        if ($this->output_mode == 'stream' || $this->output_mode == 'download') {
+            header('Content-Type: ' . $this->getFormatMime($this->output_format));
+            header('Content-Disposition: attachment; filename="' . $this->output_filename . '"');
+            header('Content-Transfer-Encoding: binary');
+            header('Expires: 0');
+            header('Pragma: no-cache');
+
+            $this->saveFile('php://output');
+        } elseif ($this->output_mode == 'file') {
+            $this->saveFile($this->output_filename);
+        }
+    }
+
+    /* Private helpers */
+    private function saveFile($path)
     {
         $this->book->save($path);
     }
 
-    public function download($filename)
-    {
-        header('Content-Type: ' . $this->getFormatMime($this->output_format));
-        header('Content-Disposition: attachment; filename="' . $filename . '"');
-        header('Content-Transfer-Encoding: binary');
-        header('Expires: 0');
-        header('Pragma: no-cache');
-
-        $this->save('php://output');
-    }
-
-    public function getColumnFormat($internal_format)
+    private function getColumnFormat($internal_format)
     {
         switch ($internal_format) {
             case ColumnType::STRING:

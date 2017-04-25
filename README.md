@@ -15,7 +15,7 @@ Ideal for simple-formatted but huge spreadsheet files
 
 ### Requirements
 
-- PHP 5.5+
+- PHP >= 5.6
 - `php_zip`, `php_xmlreader`, `php_simplexml` enabled
 - (Recommended) LibXL installed & `php_excel` enabled
 
@@ -30,62 +30,41 @@ $ composer require imtigger/oneexcel
 
 ## Writer
 
-### Basic Usages
-
-```php
-// $excel = OneExcelWriterFactory::create(); // Create empty sheet
-// $excel = OneExcelWriterFactory::create(Format::CSV); // Create empty sheet using specifed format
-// $excel = OneExcelWriterFactory::create(Format::CSV, Driver::FPUTCSV); // Create empty sheet using specifed driver
-$excel = OneExcelWriterFactory::createFromFile('templates/manifest.xlsx'); // Create sheet using template
-// $excel = OneExcelWriterFactory::createFromFile('templates/manifest.xlsx', Format::XLSX, Format::XLSX, Driver::LIBXL); // Create Excel from template specifing input/output format
-
-$excel->writeCell(1, 1, 'Hello');
-$excel->writeCell(2, 2, 'World');
-$excel->writeCell(3, 3, 3.141592653, ColumnType::NUMERIC);
-$excel->writeRow(4, ['One', 'Excel']);
-
-// $excel->save('example.xlsx'); // Save to disk
-$excel->download('example.xlsx'); // Trigger download
-```
-
 ### Documentations
 
-#### OneExcelWriterFactory
+#### Basic Usage
 
 ```php
-$writer = OneExcelWriterFactory::create($format = Format::XLSX, $driverName = Driver::AUTO))
+$excel = OneExcelWriterFactory::create()
+        ->create()
+        ->toFile('excel.xlsx')
+        ->make();
+        
+$excel->writeCell(1, 0, 'Hello');
+$excel->writeCell(2, 1, 'World');
+$excel->writeCell(3, 2, 3.141592653, ColumnType::NUMERIC);
+$excel->writeRow(4, ['One', 'Excel']);
+
+$excel->output();
 ```
+
+#### Advanced Usage
 
 ```php
-$writer = createFromFile($filename, $output_format = Format::XLSX, $input_format = Format::AUTO, $driverName = Driver::AUTO)
+$excel = OneExcelWriterFactory::create()
+        ->create()
+        ->fromFile('template.xlsx', Format::XLSX)
+        ->toFile('excel.xlsx', Format::CSV)
+        ->withDriver(Driver::SPOUT)
+        ->make();
+        
+$excel->writeCell(1, 0, 'Hello');
+$excel->writeCell(2, 1, 'World');
+$excel->writeCell(3, 2, 3.141592653, ColumnType::NUMERIC);
+$excel->writeRow(4, ['One', 'Excel']);
+
+$excel->output();
 ```
-
-#### OneExcelWriter
-
-```php
-$writer->create($output_format = Format::XLSX)
-```
-
-```php
-$writer->load($filename, $output_format = Format::XLSX, $input_format = Format::AUTO)
-```
-
-```php
-$writer->writeCell($row_num, $column_num, $data, $data_type = ColumnType::STRING)
-```
-
-```php
-$writer->writeRow($row_num, $data)
-```
-
-```php
-$writer->download($filename)
-```
-
-```php
-$writer->save($path)
-```
-
 
 ## Reader
 

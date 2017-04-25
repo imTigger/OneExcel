@@ -20,9 +20,10 @@ final class FPutCsvTest extends TestCase {
         return $value;
     }
 
-    public function testCreateCSV()
+    public function testCreate()
     {
-        $excel = \Imtigger\OneExcel\OneExcelWriterFactory::create(Format::CSV, Driver::FPUTCSV);
+        $path = 'tests/test-fputcsv.csv';
+        $excel = \Imtigger\OneExcel\OneExcelWriterFactory::create()->toFile($path)->withDriver(Driver::FPUTCSV)->make();
         $this->assertInstanceOf(\Imtigger\OneExcel\Writer\FPutCsvWriter::class, $excel);
 
         $excel->writeCell(1, 0, 'Hello');
@@ -30,9 +31,7 @@ final class FPutCsvTest extends TestCase {
         $excel->writeCell(3, 2, 3.141592653, ColumnType::NUMERIC);
         $excel->writeRow(4, ['One', 'Excel']);
 
-        $path = 'tests/test-fputcsv.csv';
-
-        $excel->save($path);
+        $excel->output();
 
         $this->assertFileExists($path);
         $this->assertGreaterThan(0, filesize($path));
@@ -46,4 +45,31 @@ final class FPutCsvTest extends TestCase {
         unlink($path);
     }
 
+    public function testTemplate()
+    {
+        $template = __DIR__ . '/../templates/template.csv';
+        $path = 'tests/test-fputcsv.csv';
+        $excel = \Imtigger\OneExcel\OneExcelWriterFactory::create()->fromFile($template)->toFile($path)->withDriver(Driver::FPUTCSV)->make();
+        $this->assertInstanceOf(\Imtigger\OneExcel\Writer\FPutCsvWriter::class, $excel);
+
+        $excel->writeCell(2, 0, 'Hello');
+        $excel->writeCell(3, 1, 'World');
+        $excel->writeCell(4, 2, 3.141592653, ColumnType::NUMERIC);
+        $excel->writeRow(5, ['One', 'Excel']);
+
+        $excel->output();
+
+        $this->assertFileExists($path);
+        $this->assertGreaterThan(0, filesize($path));
+
+        $this->assertEquals('Title', $this->getCellValue($path, 'A1'));
+        $this->assertEquals('Name', $this->getCellValue($path, 'B1'));
+        $this->assertEquals('Hello', $this->getCellValue($path, 'A2'));
+        $this->assertEquals('World', $this->getCellValue($path, 'B3'));
+        $this->assertEquals(3.141592653, $this->getCellValue($path, 'C4'));
+        $this->assertEquals('One', $this->getCellValue($path, 'A5'));
+        $this->assertEquals('Excel', $this->getCellValue($path, 'B5'));
+
+        unlink($path);
+    }
 }
