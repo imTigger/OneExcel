@@ -10,10 +10,10 @@ $template = __DIR__ . '/../templates/template.xlsx';
 $output = basename(__FILE__ . '.xlsx');
 $excel = OneExcelWriterFactory::create()->fromFile($template)->toFile($output)->make();
 
-$excel->writeCell(1, 0, 'Hello');
-$excel->writeCell(2, 1, 'World');
-$excel->writeCell(3, 2, 3.141592653, ColumnType::NUMERIC);
-$excel->writeRow(4, ['One', 'Excel']);
+$excel->writeCell(2, 0, 'Hello');
+$excel->writeCell(3, 1, 'World');
+$excel->writeCell(4, 2, 3.141592653, ColumnType::NUMERIC);
+$excel->writeRow(5, ['One', 'Excel']);
 
 $excel->output();
 
