@@ -17,45 +17,11 @@ class OneExcelWriterFactory
     private $output_filename;
 
     /**
-     * @param string $format
-     * @param string $driverName
-     * @return OneExcelWriterFactory|OneExcelWriter
+     * @return OneExcelWriterFactory
      */
-    public static function create($format = Format::XLSX, $driverName = Driver::AUTO)
+    public static function create()
     {
-        $factory = new OneExcelWriterFactory();
-        if (func_num_args() == 0) {
-            return $factory->createEmpty();
-        } else if (func_num_args() == 1) {
-            return $factory->toFile('output.' . $format)->make();
-        } else if (func_num_args() == 2) {
-            return $factory->toFile('output.' . $format)->withDriver($driverName)->make();
-        }
-    }
-
-    /**
-     * @param $filename
-     * @param string $output_format
-     * @param string $input_format
-     * @param string $driverName
-     * @return OneExcelWriter
-     * @deprecated Use ::fromFile()
-     */
-    public static function createFromFile($filename, $output_format = Format::XLSX, $input_format = Format::AUTO, $driverName = Driver::AUTO)
-    {
-        $factory = new OneExcelWriterFactory();
-
-        if (func_num_args() == 1) {
-            $auto_output_format = Format::AUTO;
-            $factory->autoDetectFormatFromFilename($auto_output_format, $filename);
-            return $factory->fromFile($filename)->outputFormat($auto_output_format)->make();
-        } else if (func_num_args() == 2) {
-            return $factory->fromFile($filename)->outputFormat($output_format)->make();
-        } else if (func_num_args() == 3) {
-            return $factory->fromFile($filename, $input_format)->outputFormat($output_format)->make();
-        } else if (func_num_args() == 4) {
-            return $factory->fromFile($filename, $input_format)->outputFormat($output_format)->withDriver($driverName)->make();
-        }
+        return new OneExcelWriterFactory();
     }
 
     /**
@@ -67,28 +33,6 @@ class OneExcelWriterFactory
     {
         $this->input_filename = $filename;
         $this->input_format = $input_format;
-
-        $this->autoDetectFormatFromFilename($this->input_format, $filename);
-
-        return $this;
-    }
-
-    /**
-     * @param $input_format
-     * @return $this
-     */
-    public function inputFormat($input_format) {
-        $this->input_format = $input_format;
-
-        return $this;
-    }
-
-    /**
-     * @param $output_format
-     * @return $this
-     */
-    public function outputFormat($output_format) {
-        $this->output_format = $output_format;
 
         return $this;
     }
@@ -145,6 +89,10 @@ class OneExcelWriterFactory
      * @return OneExcelWriter
      */
     public function make() {
+        if (!empty($this->input_filename)) {
+            $this->autoDetectFormatFromFilename($this->input_format, $this->input_filename);
+        }
+
         if (!empty($this->output_filename)) {
             $this->autoDetectFormatFromFilename($this->output_format, $this->output_filename);
         }
