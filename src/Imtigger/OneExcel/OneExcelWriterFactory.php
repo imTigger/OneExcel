@@ -9,7 +9,7 @@ use Imtigger\OneExcel\Writer\SpoutWriter;
 
 class OneExcelWriterFactory
 {
-    private $driver;
+    private $driver = Driver::AUTO;
     private $input_format;
     private $output_format;
     private $output_mode;
@@ -97,7 +97,7 @@ class OneExcelWriterFactory
             $this->autoDetectFormatFromFilename($this->output_format, $this->output_filename);
         }
 
-        if ($this->driver !== null) {
+        if ($this->driver != Driver::AUTO) {
             $driver = $this->getDriverByName($this->driver);
         } else {
             $driver = $this->getDriverByFormat($this->output_format, $this->input_format);
