@@ -51,7 +51,7 @@ class PHPExcelWriter extends OneExcelWriter implements OneExcelWriterInterface
 
     public function output()
     {
-        if ($this->output_mode == 'download') {
+        if ($this->output_mode == 'stream' || $this->output_mode == 'download') {
             header('Content-Type: ' . $this->getFormatMime($this->output_format));
             header('Content-Disposition: attachment; filename="' . $this->output_filename . '"');
             header('Content-Transfer-Encoding: binary');
