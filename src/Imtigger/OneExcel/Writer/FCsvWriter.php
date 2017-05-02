@@ -4,7 +4,7 @@ namespace Imtigger\OneExcel\Writer;
 use Imtigger\OneExcel\Format;
 use Imtigger\OneExcel\OneExcelWriterInterface;
 
-class FPutCsvWriter extends OneExcelWriter implements OneExcelWriterInterface
+class FCsvWriter extends OneExcelWriter implements OneExcelWriterInterface
 {
     public static $input_format_supported = [Format::CSV];
     public static $output_format_supported = [Format::CSV];

@@ -70,7 +70,7 @@ final class ReaderFactoryTest extends TestCase
     public function testCreateFputcsv()
     {
         $excel = \Imtigger\OneExcel\OneExcelWriterFactory::create()->toFile('test.csv')->withDriver(Driver::FPUTCSV)->make();
-        $this->assertInstanceOf(\Imtigger\OneExcel\Writer\FPutCsvWriter::class, $excel);
+        $this->assertInstanceOf(\Imtigger\OneExcel\Writer\FCsvWriter::class, $excel);
     }
 
     public function testUnsupportedDriver()

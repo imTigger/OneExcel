@@ -1,7 +1,7 @@
 <?php
 namespace Imtigger\OneExcel;
 
-use Imtigger\OneExcel\Reader\FPutCsvReader;
+use Imtigger\OneExcel\Reader\FCsvReader;
 use Imtigger\OneExcel\Reader\LibXLReader;
 use Imtigger\OneExcel\Reader\OneExcelReader;
 use Imtigger\OneExcel\Reader\PHPExcelReader;
@@ -113,7 +113,7 @@ class OneExcelReaderFactory
             case Driver::SPOUT:
                 return SpoutReader::class;
             case Driver::FPUTCSV:
-                return FPutCsvReader::class;
+                return FCsvReader::class;
         }
         throw new \Exception("Unknown driver {$driver}");
     }
