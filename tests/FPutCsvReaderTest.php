@@ -5,7 +5,7 @@ use Imtigger\OneExcel\Driver;
 use Imtigger\OneExcel\Format;
 use PHPUnit\Framework\TestCase;
 
-final class SpoutTest extends TestCase {
+final class FPutCsvReaderTest extends TestCase {
 
     private function getCellValue($filename, $cellName)
     {
@@ -22,9 +22,9 @@ final class SpoutTest extends TestCase {
 
     public function testCreate()
     {
-        $path = 'tests/test-spout.xlsx';
-        $excel = \Imtigger\OneExcel\OneExcelWriterFactory::create()->toFile($path)->withDriver(Driver::SPOUT)->make();
-        $this->assertInstanceOf(\Imtigger\OneExcel\Writer\SpoutWriter::class, $excel);
+        $path = 'tests/test-fputcsv.csv';
+        $excel = \Imtigger\OneExcel\OneExcelWriterFactory::create()->toFile($path)->withDriver(Driver::FPUTCSV)->make();
+        $this->assertInstanceOf(\Imtigger\OneExcel\Writer\FPutCsvWriter::class, $excel);
 
         $excel->writeCell(1, 0, 'Hello');
         $excel->writeCell(2, 1, 'World');
@@ -47,10 +47,10 @@ final class SpoutTest extends TestCase {
 
     public function testTemplate()
     {
-        $template = __DIR__ . '/../templates/template.xlsx';
-        $path = 'tests/test-spout.xlsx';
-        $excel = \Imtigger\OneExcel\OneExcelWriterFactory::create()->fromFile($template)->toFile($path)->withDriver(Driver::SPOUT)->make();
-        $this->assertInstanceOf(\Imtigger\OneExcel\Writer\SpoutWriter::class, $excel);
+        $template = __DIR__ . '/../templates/template.csv';
+        $path = 'tests/test-fputcsv.csv';
+        $excel = \Imtigger\OneExcel\OneExcelWriterFactory::create()->fromFile($template)->toFile($path)->withDriver(Driver::FPUTCSV)->make();
+        $this->assertInstanceOf(\Imtigger\OneExcel\Writer\FPutCsvWriter::class, $excel);
 
         $excel->writeCell(2, 0, 'Hello');
         $excel->writeCell(3, 1, 'World');

@@ -5,7 +5,7 @@ use Imtigger\OneExcel\Driver;
 use Imtigger\OneExcel\Format;
 use PHPUnit\Framework\TestCase;
 
-final class LibXLTest extends TestCase {
+final class LibXLReaderTest extends TestCase {
 
     private function getCellValue($filename, $cellName)
     {
