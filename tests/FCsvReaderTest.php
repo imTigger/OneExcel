@@ -5,7 +5,7 @@ use Imtigger\OneExcel\Driver;
 use Imtigger\OneExcel\Format;
 use PHPUnit\Framework\TestCase;
 
-final class FPutCsvReaderTest extends TestCase {
+final class FCsvReaderTest extends TestCase {
 
     private function getCellValue($filename, $cellName)
     {
