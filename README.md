@@ -67,7 +67,19 @@ $excel->output();
 
 ## Reader
 
-Not implemented yet
+(Version 0.6+, unreleased)
+
+```php
+$excel = OneExcelReaderFactory::create()
+        ->fromFile('excel.xlsx')
+        ->make();
+        
+foreach ($excel->row() as $row) {
+    //
+}
+
+$excel->close();
+```
 
 ## Known Issues
 
@@ -88,4 +100,5 @@ Not implemented yet
 - [ ] Implement ColumnType::BOOLEAN, ColumnType::NULL for LibXL driver
 - [ ] Implement ColumnType::* for Spout driver (Require upstream update)
 - [ ] Implement sheet support
-- [ ] Implement Reader
+- [x] Implement Reader
+- [x] Add PHPUnit tests
