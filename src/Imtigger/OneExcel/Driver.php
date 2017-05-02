@@ -7,5 +7,7 @@ class Driver
     const PHPEXCEL = 'phpexcel';
     const LIBXL = 'libxl';
     const SPOUT = 'spout';
-    const FPUTCSV = 'fputcsv';
+    const FPUTCSV = 'fcsv';
+    const FGETCSV = 'fcsv';
+    const PHPCSV = 'fcsv';
 }
