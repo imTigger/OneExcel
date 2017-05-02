@@ -46,4 +46,20 @@ class PHPExcelReader extends OneExcelReader implements OneExcelReaderInterface
         unset($this->sheet);
         unset($this->book);
     }
+
+    /* Private helpers */
+    private function getFormatCode($format)
+    {
+        switch ($format) {
+            case Format::XLSX:
+                return 'Excel2007';
+            case Format::XLS:
+                return 'Excel5';
+            case Format::CSV:
+                return 'CSV';
+            case Format::ODS:
+                return 'OOCalc';
+        }
+        throw new \Exception("Unknown format {$format}");
+    }
 }
