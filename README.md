@@ -6,11 +6,11 @@
 [![Total Downloads](https://poser.pugx.org/imtigger/oneexcel/downloads)](https://packagist.org/packages/imtigger/oneexcel)
 [![License](https://poser.pugx.org/imtigger/oneexcel/license)](https://packagist.org/packages/imtigger/oneexcel)
 
-PHP Excel read/write abstraction layer, support [PHPExcel](https://github.com/PHPOffice/PHPExcel), [LibXL](https://github.com/iliaal/php_excel), [Spout](https://github.com/box/spout) and PHP `fputcsv`
+PHP Excel read/write abstraction layer, support [PHPExcel](https://github.com/PHPOffice/PHPExcel), [LibXL](https://github.com/iliaal/php_excel), [Spout](https://github.com/box/spout) and PHP `fputcsv`/`fgetcsv`
 
-Targets to simplify server compatibility issue between Excel libraries.
+Targets to simplify server compatibility issue between Excel libraries and performance issue in huge files.
 
-Ideal for simple-formatted but huge spreadsheet files
+Ideal for simple-formatted but huge spreadsheet files such as reporting.
 
 ## Installation
 
