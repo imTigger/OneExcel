@@ -7,7 +7,7 @@ use Imtigger\OneExcel\Driver;
 use Imtigger\OneExcel\Format;
 
 $output = basename(__FILE__ . '.xlsx');
-$excel = OneExcelWriterFactory::createEmpty()->toDownload($output)->make();
+$excel = OneExcelWriterFactory::create()->toDownload($output)->make();
 
 $excel->writeCell(1, 0, 'Hello');
 $excel->writeCell(2, 1, 'World');
