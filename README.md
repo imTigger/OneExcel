@@ -96,8 +96,7 @@ $excel->close();
 - [x] Implement load() for SpoutWriter and FPutCsvWriter
 - [x] Implement $writer->writeRow($arr)
 - [x] Implement ColumnType::NUMERIC, ColumnType::FORMULA for all drivers
-- [ ] Implement ColumnType::DATE, ColumnType::TIME, ColumnType::DATETIME for all drivers
-- [ ] Implement ColumnType::BOOLEAN, ColumnType::NULL for LibXL driver
+- [x] Implement ColumnType::DATE, ColumnType::TIME, ColumnType::DATETIME for all drivers
 - [ ] Implement ColumnType::* for Spout driver (Require upstream update)
 - [ ] Implement sheet support
 - [x] Implement Reader
