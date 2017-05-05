@@ -37,9 +37,9 @@ class LibXLWriter extends OneExcelWriter implements OneExcelWriterInterface
         $this->sheet = $this->book->getSheet(0);
     }
 
-    public function writeCell($row_num, $column_num, $data, $data_type = ColumnType::STRING)
+    public function writeCell($row_num, $column_num, $data, $data_type = null)
     {
-        $this->sheet->write($row_num - 1, $column_num, $data, null, $this->getColumnFormat($data_type));
+        $this->sheet->write($row_num - 1, $column_num, $data, $this->getCellFormat($data_type), $this->getCellDataType($data_type));
     }
 
     public function writeRow($row_num, $data)
@@ -68,16 +68,50 @@ class LibXLWriter extends OneExcelWriter implements OneExcelWriterInterface
         $this->book->save($path);
     }
 
-    private function getColumnFormat($internal_format)
+    private function getCellFormat($internal_format)
+    {
+        $format = new \ExcelFormat($this->book);
+
+        switch ($internal_format) {
+            case ColumnType::STRING:
+                $format->numberFormat(\ExcelFormat::NUMFORMAT_TEXT);
+                return $format;
+            case ColumnType::TIME:
+                $format->numberFormat(\ExcelFormat::NUMFORMAT_CUSTOM_HMMSS);
+                return $format;
+            case ColumnType::DATE:
+                $newFormat = $this->book->addCustomFormat('yyyy-mm-dd');
+                $format->numberFormat($newFormat);
+                return $format;
+            case ColumnType::DATETIME:
+                $newFormat = $this->book->addCustomFormat('yyyy-mm-dd hh:mm:ss');
+                $format->numberFormat($newFormat);
+                return $format;
+            case ColumnType::INTEGER:
+                $format->numberFormat(\ExcelFormat::NUMFORMAT_NUMBER);
+                return $format;
+            case ColumnType::NUMERIC:
+                $format->numberFormat(\ExcelFormat::NUMFORMAT_NUMBER_D2);
+                return $format;
+            case ColumnType::FORMULA:
+                return null;
+        }
+        return null;
+    }
+
+    private function getCellDataType($internal_format)
     {
         switch ($internal_format) {
             case ColumnType::STRING:
                 return -1;
+            case ColumnType::DATE:
+            case ColumnType::DATETIME:
+                return \ExcelFormat::AS_DATE;
             case ColumnType::NUMERIC:
                 return \ExcelFormat::AS_NUMERIC_STRING;
             case ColumnType::FORMULA:
                 return \ExcelFormat::AS_FORMULA;
         }
-        return -1;
+        return null;
     }
 }

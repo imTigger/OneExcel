@@ -39,9 +39,13 @@ class PHPExcelWriter extends OneExcelWriter implements OneExcelWriterInterface
         $this->sheet = $this->book->getActiveSheet();
     }
 
-    public function writeCell($row_num, $column_num, $data, $data_type = ColumnType::STRING)
+    public function writeCell($row_num, $column_num, $data, $data_type = null)
     {
-        $this->sheet->setCellValueExplicitByColumnAndRow($column_num, $row_num, $data, $this->getColumnFormat($data_type));
+        $cell = $this->sheet->getCellByColumnAndRow($column_num, $row_num);
+        $cell->setValueExplicit($data, $this->getCellDataType($data_type));
+        if ($data_type != null) {
+            $cell->getStyle()->getNumberFormat()->setFormatCode($this->getCellFormat($data_type));
+        }
     }
 
     public function writeRow($row_num, $data)
@@ -88,11 +92,33 @@ class PHPExcelWriter extends OneExcelWriter implements OneExcelWriterInterface
         throw new \Exception("Unknown format {$format}");
     }
 
-    private function getColumnFormat($internal_format)
+    private function getCellFormat($internal_format)
+    {
+        switch ($internal_format) {
+            case ColumnType::STRING:
+                return \PHPExcel_Style_NumberFormat::FORMAT_TEXT;
+            case ColumnType::TIME:
+                return 'hh:mm:ss';
+            case ColumnType::DATE:
+                return 'yyyy-mm-dd';
+            case ColumnType::DATETIME:
+                return 'yyyy-mm-dd hh:mm:ss';
+            case ColumnType::INTEGER:
+                return \PHPExcel_Style_NumberFormat::FORMAT_NUMBER;
+            case ColumnType::NUMERIC:
+                return \PHPExcel_Style_NumberFormat::FORMAT_NUMBER_00;
+            case ColumnType::FORMULA:
+                return null;
+        }
+        return null;
+    }
+
+    private function getCellDataType($internal_format)
     {
         switch ($internal_format) {
             case ColumnType::STRING:
                 return PHPExcel_Cell_DataType::TYPE_STRING;
+            case ColumnType::INTEGER:
             case ColumnType::NUMERIC:
                 return PHPExcel_Cell_DataType::TYPE_NUMERIC;
             case ColumnType::BOOLEAN:
