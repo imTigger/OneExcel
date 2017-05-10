@@ -5,7 +5,7 @@ use Imtigger\OneExcel\Driver;
 use Imtigger\OneExcel\Format;
 use PHPUnit\Framework\TestCase;
 
-final class SpoutTest extends TestCase {
+final class SpoutReaderTest extends TestCase {
 
     private function getCellValue($filename, $cellName)
     {

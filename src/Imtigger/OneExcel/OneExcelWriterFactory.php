@@ -1,7 +1,7 @@
 <?php
 namespace Imtigger\OneExcel;
 
-use Imtigger\OneExcel\Writer\FPutCsvWriter;
+use Imtigger\OneExcel\Writer\FCsvWriter;
 use Imtigger\OneExcel\Writer\LibXLWriter;
 use Imtigger\OneExcel\Writer\OneExcelWriter;
 use Imtigger\OneExcel\Writer\PHPExcelWriter;
@@ -166,7 +166,7 @@ class OneExcelWriterFactory
             case Driver::SPOUT:
                 return SpoutWriter::class;
             case Driver::FPUTCSV:
-                return FPutCsvWriter::class;
+                return FCsvWriter::class;
         }
         throw new \Exception("Unknown driver {$driver}");
     }

@@ -6,11 +6,11 @@
 [![Total Downloads](https://poser.pugx.org/imtigger/oneexcel/downloads)](https://packagist.org/packages/imtigger/oneexcel)
 [![License](https://poser.pugx.org/imtigger/oneexcel/license)](https://packagist.org/packages/imtigger/oneexcel)
 
-PHP Excel read/write abstraction layer, support [PHPExcel](https://github.com/PHPOffice/PHPExcel), [LibXL](https://github.com/iliaal/php_excel), [Spout](https://github.com/box/spout) and PHP `fputcsv`
+PHP Excel read/write abstraction layer, support [PHPExcel](https://github.com/PHPOffice/PHPExcel), [LibXL](https://github.com/iliaal/php_excel), [Spout](https://github.com/box/spout) and PHP `fputcsv`/`fgetcsv`
 
-Targets to simplify server compatibility issue between Excel libraries.
+Targets to simplify server compatibility issue between Excel libraries and performance issue in huge files.
 
-Ideal for simple-formatted but huge spreadsheet files
+Ideal for simple-formatted but huge spreadsheet files such as reporting.
 
 ## Installation
 
@@ -67,7 +67,19 @@ $excel->output();
 
 ## Reader
 
-Not implemented yet
+(Version 0.6+, unreleased)
+
+```php
+$excel = OneExcelReaderFactory::create()
+        ->fromFile('excel.xlsx')
+        ->make();
+        
+foreach ($excel->row() as $row) {
+    //
+}
+
+$excel->close();
+```
 
 ## Known Issues
 
@@ -84,8 +96,8 @@ Not implemented yet
 - [x] Implement load() for SpoutWriter and FPutCsvWriter
 - [x] Implement $writer->writeRow($arr)
 - [x] Implement ColumnType::NUMERIC, ColumnType::FORMULA for all drivers
-- [ ] Implement ColumnType::DATE, ColumnType::TIME, ColumnType::DATETIME for all drivers
-- [ ] Implement ColumnType::BOOLEAN, ColumnType::NULL for LibXL driver
+- [x] Implement ColumnType::DATE, ColumnType::TIME, ColumnType::DATETIME for all drivers
 - [ ] Implement ColumnType::* for Spout driver (Require upstream update)
 - [ ] Implement sheet support
-- [ ] Implement Reader
+- [x] Implement Reader
+- [x] Add PHPUnit tests
