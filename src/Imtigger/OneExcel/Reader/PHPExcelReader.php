@@ -35,7 +35,13 @@ class PHPExcelReader extends OneExcelReader implements OneExcelReaderInterface
             $cellIterator = $row->getCellIterator();
             $data = [];
             foreach ($cellIterator As $cell) {
-                $data[] = $cell->getValue();
+                $value = $cell->getValue();
+
+                if ($value instanceof \PHPExcel_RichText) {
+                    $value = $value->getPlainText();
+                }
+
+                $data[] = $value;
             }
             yield $data;
         }
