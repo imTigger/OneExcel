@@ -4,6 +4,18 @@ use Imtigger\OneExcel\Driver;
 use PHPUnit\Framework\TestCase;
 
 final class FCsvExcelReaderTest extends TestCase {
+    public function testDependency()
+    {
+        if (!extension_loaded('excel')) {
+            $this->markTestSkipped(
+                'The LibXL extension is not available.'
+            );
+        }
+    }
+
+    /**
+     * @depends testDependency
+     */
     public function testReader()
     {
         $excel = \Imtigger\OneExcel\OneExcelReaderFactory::create()->fromFile(__DIR__ . '/01simple.xlsx')->withDriver(Driver::LIBXL)->make();
