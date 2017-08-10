@@ -5,7 +5,7 @@ use Imtigger\OneExcel\Format;
 use Imtigger\OneExcel\OneExcelWriterFactory;
 use PHPUnit\Framework\TestCase;
 
-final class ReaderFactoryTest extends TestCase
+final class WriterFactoryTest extends TestCase
 {
     private function requireLibXL()
     {

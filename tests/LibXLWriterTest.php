@@ -5,7 +5,7 @@ use Imtigger\OneExcel\Driver;
 use Imtigger\OneExcel\Format;
 use PHPUnit\Framework\TestCase;
 
-final class PHPExcelReaderTest extends TestCase {
+final class LibXLWriterTest extends TestCase {
 
     private function getCellValue($filename, $cellName)
     {
@@ -20,11 +20,23 @@ final class PHPExcelReaderTest extends TestCase {
         return $value;
     }
 
+    public function testDependency()
+    {
+        if (!extension_loaded('excel')) {
+            $this->markTestSkipped(
+                'The LibXL extension is not available.'
+            );
+        }
+    }
+
+    /**
+     * @depends testDependency
+     */
     public function testCreate()
     {
-        $path = 'tests/test-phpexcel.xlsx';
-        $excel = \Imtigger\OneExcel\OneExcelWriterFactory::create()->toFile($path)->withDriver(Driver::PHPEXCEL)->make();
-        $this->assertInstanceOf(\Imtigger\OneExcel\Writer\PHPExcelWriter::class, $excel);
+        $path = 'tests/test-libxl.xlsx';
+        $excel = \Imtigger\OneExcel\OneExcelWriterFactory::create()->toFile($path)->withDriver(Driver::LIBXL)->make();
+        $this->assertInstanceOf(\Imtigger\OneExcel\Writer\LibXLWriter::class, $excel);
 
         $excel->writeCell(1, 0, 'Hello');
         $excel->writeCell(2, 1, 'World');
@@ -45,12 +57,15 @@ final class PHPExcelReaderTest extends TestCase {
         unlink($path);
     }
 
+    /**
+     * @depends testDependency
+     */
     public function testTemplate()
     {
         $template = __DIR__ . '/../templates/template.xlsx';
-        $path = 'tests/test-phpexcel.xlsx';
-        $excel = \Imtigger\OneExcel\OneExcelWriterFactory::create()->fromFile($template)->toFile($path)->withDriver(Driver::PHPEXCEL)->make();
-        $this->assertInstanceOf(\Imtigger\OneExcel\Writer\PHPExcelWriter::class, $excel);
+        $path = 'tests/test-libxl.xlsx';
+        $excel = \Imtigger\OneExcel\OneExcelWriterFactory::create()->fromFile($template)->toFile($path)->withDriver(Driver::LIBXL)->make();
+        $this->assertInstanceOf(\Imtigger\OneExcel\Writer\LibXLWriter::class, $excel);
 
         $excel->writeCell(2, 0, 'Hello');
         $excel->writeCell(3, 1, 'World');
