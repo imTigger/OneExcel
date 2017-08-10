@@ -84,6 +84,7 @@ $excel->close();
 
 ## Known Issues
 
+- Spout reader driver with preserves empty row with SINGLE column (Upstream problem?)
 - Spout do not support random read/write rows (Upstream limitation, Won't fix)
 - Spout do not support formula (Upstream limitation, Won't fix)
 - fputcsv driver ignores all ColumnType::* (File-type limitation, Won't fix)
