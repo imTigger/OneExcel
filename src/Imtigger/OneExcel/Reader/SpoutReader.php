@@ -19,8 +19,9 @@ class SpoutReader extends OneExcelReader implements OneExcelReaderInterface
         $this->input_format = $input_format;
 
         $this->reader = ReaderFactory::create($input_format);
-        $this->reader->open($filename);
         $this->reader->setShouldFormatDates(true);
+        $this->reader->setShouldPreserveEmptyRows(true);
+        $this->reader->open($filename);
 
         foreach ($this->reader->getSheetIterator() as $sheetIndex => $sheet) {
             $this->sheet = $sheet;
