@@ -1,6 +1,7 @@
 <?php
 namespace Imtigger\OneExcel\Reader;
 
+use Box\Spout\Reader\SheetInterface;
 use Imtigger\OneExcel\Format;
 use Imtigger\OneExcel\OneExcelReaderInterface;
 use Box\Spout\Reader\ReaderFactory;
@@ -11,6 +12,7 @@ class SpoutReader extends OneExcelReader implements OneExcelReaderInterface
     public static $input_format_supported = [Format::XLSX, Format::CSV, Format::ODS];
     /** @var AbstractReader $reader */
     private $reader;
+    /** @var SheetInterface $sheet */
     private $sheet;
 
     public function load($filename, $input_format = Format::AUTO, $options = [])

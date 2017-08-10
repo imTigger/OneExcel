@@ -1,6 +1,7 @@
 <?php
 namespace Imtigger\OneExcel\Writer;
 
+use Box\Spout\Reader\AbstractReader;
 use Box\Spout\Writer\AbstractMultiSheetsWriter;
 use Imtigger\OneExcel\Format;
 use Imtigger\OneExcel\OneExcelWriterInterface;
@@ -42,6 +43,7 @@ class SpoutWriter extends OneExcelWriter implements OneExcelWriterInterface
         $this->create($output_format);
 
         // Copy data into new sheet
+        /** @var AbstractReader $reader */
         $reader = ReaderFactory::create($input_format);
         $reader->open($filename);
         $reader->setShouldFormatDates(true);

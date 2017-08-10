@@ -1,7 +1,6 @@
 <?php
 namespace Imtigger\OneExcel\Reader;
 
-use Imtigger\OneExcel\Format;
 use Imtigger\OneExcel\OneExcelReaderInterface;
 
 abstract class OneExcelReader implements OneExcelReaderInterface

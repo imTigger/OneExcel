@@ -1,11 +1,8 @@
 <?php
 namespace Imtigger\OneExcel\Reader;
 
-use Imtigger\OneExcel\ColumnType;
 use Imtigger\OneExcel\Format;
 use Imtigger\OneExcel\OneExcelReaderInterface;
-use Imtigger\OneExcel\OneExcelWriterInterface;
-use Imtigger\OneExcel\Reader\OneExcelReader;
 
 class LibXLReader extends OneExcelReader implements OneExcelReaderInterface
 {

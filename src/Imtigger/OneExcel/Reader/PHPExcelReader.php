@@ -1,10 +1,8 @@
 <?php
 namespace Imtigger\OneExcel\Reader;
 
-use Imtigger\OneExcel\ColumnType;
 use Imtigger\OneExcel\Format;
 use Imtigger\OneExcel\OneExcelReaderInterface;
-use PHPExcel_Cell_DataType;
 use PHPExcel_IOFactory;
 
 class PHPExcelReader extends OneExcelReader implements OneExcelReaderInterface
@@ -34,6 +32,7 @@ class PHPExcelReader extends OneExcelReader implements OneExcelReaderInterface
         foreach ($rowIterator As $row) {
             $cellIterator = $row->getCellIterator();
             $data = [];
+            /** @var \PHPExcel_Cell $cell */
             foreach ($cellIterator As $cell) {
                 $value = $cell->getValue();
 
