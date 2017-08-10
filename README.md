@@ -67,11 +67,12 @@ $excel->output();
 
 ## Reader
 
-(Version 0.6+, unreleased)
+(Version 0.6+)
 
 ```php
 $excel = OneExcelReaderFactory::create()
         ->fromFile('excel.xlsx')
+        // ->withDriver(Driver::SPOUT)
         ->make();
         
 foreach ($excel->row() as $row) {
