@@ -4,6 +4,8 @@ namespace Imtigger\OneExcel\Reader;
 use Imtigger\OneExcel\Format;
 use Imtigger\OneExcel\OneExcelReaderInterface;
 use PHPExcel_IOFactory;
+use PHPExcel_CachedObjectStorageFactory;
+use PHPExcel_Settings;
 
 class PHPExcelReader extends OneExcelReader implements OneExcelReaderInterface
 {
@@ -19,7 +21,12 @@ class PHPExcelReader extends OneExcelReader implements OneExcelReaderInterface
 
         $this->input_format = $input_format;
 
+        $cacheMethod = PHPExcel_CachedObjectStorageFactory:: cache_to_phpTemp;
+        $cacheSettings = array( ' memoryCacheSize ' => '8MB');
+        PHPExcel_Settings::setCacheStorageMethod($cacheMethod, $cacheSettings);
+        
         $objReader = PHPExcel_IOFactory::createReader($this->getFormatCode($this->input_format));
+        $objReader->setReadDataOnly(true);
 
         $this->book = $objReader->load($filename);
         $this->sheet = $this->book->getActiveSheet();
