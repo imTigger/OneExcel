@@ -5,6 +5,7 @@ use Imtigger\OneExcel\Writer\FCsvWriter;
 use Imtigger\OneExcel\Writer\LibXLWriter;
 use Imtigger\OneExcel\Writer\OneExcelWriter;
 use Imtigger\OneExcel\Writer\PHPExcelWriter;
+use Imtigger\OneExcel\Writer\PHPSpreadsheetWriter;
 use Imtigger\OneExcel\Writer\SpoutWriter;
 
 class OneExcelWriterFactory
@@ -87,6 +88,7 @@ class OneExcelWriterFactory
 
     /**
      * @return OneExcelWriter
+     * @throws \Exception
      */
     public function make() {
         if (!empty($this->input_filename)) {
@@ -121,6 +123,7 @@ class OneExcelWriterFactory
     /**
      * @param $input_format
      * @param $filename
+     * @throws \Exception
      */
     private function autoDetectFormatFromFilename(&$input_format, $filename)
     {
@@ -161,6 +164,8 @@ class OneExcelWriterFactory
         switch ($driver) {
             case Driver::PHPEXCEL:
                 return PHPExcelWriter::class;
+            case Driver::PHPSPREADSHEET:
+                return PHPSpreadsheetWriter::class;
             case Driver::LIBXL:
                 return LibXLWriter::class;
             case Driver::SPOUT:

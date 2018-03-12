@@ -5,6 +5,7 @@ use Imtigger\OneExcel\Reader\FCsvReader;
 use Imtigger\OneExcel\Reader\LibXLReader;
 use Imtigger\OneExcel\Reader\OneExcelReader;
 use Imtigger\OneExcel\Reader\PHPExcelReader;
+use Imtigger\OneExcel\Reader\PHPSpreadsheetReader;
 use Imtigger\OneExcel\Reader\SpoutReader;
 
 class OneExcelReaderFactory
@@ -45,6 +46,7 @@ class OneExcelReaderFactory
 
     /**
      * @return OneExcelReader
+     * @throws \Exception
      */
     public function make() {
         if (!empty($this->input_filename)) {
@@ -68,6 +70,7 @@ class OneExcelReaderFactory
     /**
      * @param $input_format
      * @param $filename
+     * @throws \Exception
      */
     private function autoDetectFormatFromFilename(&$input_format, $filename)
     {
@@ -108,6 +111,8 @@ class OneExcelReaderFactory
         switch ($driver) {
             case Driver::PHPEXCEL:
                 return PHPExcelReader::class;
+            case Driver::PHPSPREADSHEET:
+                return PHPSpreadsheetReader::class;
             case Driver::LIBXL:
                 return LibXLReader::class;
             case Driver::SPOUT:
@@ -120,7 +125,6 @@ class OneExcelReaderFactory
 
     /**
      * @param $output_format
-     * @param null $input_format
      * @return string
      */
     private function getDriverByFormat($output_format)
