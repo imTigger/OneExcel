@@ -77,9 +77,18 @@ class FCsvWriter extends OneExcelWriter implements OneExcelWriterInterface
 
     public function writeRow($row_num, $data)
     {
-        $this->flushRow();
-        $this->addRow($data);
-        $this->last_row += 1;
+        if ($row_num < $this->last_row) {
+            throw new \Exception("Writing row backward is not supported by fputcsv, was on row {$this->last_row}, trying to write row {$row_num}");
+        }
+
+        // Aggregate columns in same row
+        if ($this->last_row != $row_num) {
+            $this->flushRow();
+        }
+
+        $this->data = $data;
+
+        $this->last_row = $row_num;
     }
 
     public function output()
