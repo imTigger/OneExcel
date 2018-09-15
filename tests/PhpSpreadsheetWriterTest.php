@@ -29,6 +29,7 @@ final class PhpSpreadsheetWriterTest extends TestCase {
         $excel->writeCell(2, 1, 'World');
         $excel->writeCell(3, 2, 3.141592653, ColumnType::NUMERIC);
         $excel->writeRow(4, ['One', 'Excel']);
+        $excel->writeCell(4, 2, 'Test');
 
         $excel->output();
 
@@ -40,6 +41,7 @@ final class PhpSpreadsheetWriterTest extends TestCase {
         $this->assertEquals(3.141592653, $this->getCellValue($path, 'C3'));
         $this->assertEquals('One', $this->getCellValue($path, 'A4'));
         $this->assertEquals('Excel', $this->getCellValue($path, 'B4'));
+        $this->assertEquals('Test', $this->getCellValue($path, 'C4'));
 
         unlink($path);
     }
@@ -55,6 +57,7 @@ final class PhpSpreadsheetWriterTest extends TestCase {
         $excel->writeCell(3, 1, 'World');
         $excel->writeCell(4, 2, 3.141592653, ColumnType::NUMERIC);
         $excel->writeRow(5, ['One', 'Excel']);
+        $excel->writeCell(5, 2, 'Test');
 
         $excel->output();
 
@@ -68,6 +71,7 @@ final class PhpSpreadsheetWriterTest extends TestCase {
         $this->assertEquals(3.141592653, $this->getCellValue($path, 'C4'));
         $this->assertEquals('One', $this->getCellValue($path, 'A5'));
         $this->assertEquals('Excel', $this->getCellValue($path, 'B5'));
+        $this->assertEquals('Test', $this->getCellValue($path, 'C5'));
 
         unlink($path);
     }
