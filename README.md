@@ -69,12 +69,12 @@ $excel->output();
 
 #### With Template
 
-|           | To XLSX        | To XLS         | To ODS    | To CSV         | 
-|-----------|----------------|----------------|-----------|----------------|
-| From XLSX | LibXL          | PhpSpreadSheet | Spout     | PhpSpreadSheet |
-| From XLS  | PhpSpreadSheet | LibXL          | -         | PhpSpreadSheet |
-| From ODS  | PhpSpreadSheet | PhpSpreadSheet | Spout     | PhpSpreadSheet |
-| From CSV  | Spout          | PhpSpreadSheet | Spout     | Spout          |
+|         | From XLSX      | From XLS       | From ODS       | From CSV       |
+|---------|----------------|----------------|----------------|----------------|
+| To XLSX | LibXL          | PhpSpreadSheet | PhpSpreadSheet | Spout          |
+| To XLS  | PhpSpreadSheet | LibXL          | PhpSpreadSheet | PhpSpreadSheet |
+| To ODS  | Spout          | Not Supported  | Spout          | Spout          |
+| To CSV  | PhpSpreadSheet | PhpSpreadSheet | PhpSpreadSheet | Spout          |
 
 
 #### Without Template
