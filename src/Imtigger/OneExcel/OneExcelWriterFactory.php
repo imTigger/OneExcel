@@ -184,7 +184,7 @@ class OneExcelWriterFactory
         if (class_exists('ExcelBook') && in_array($output_format, [Format::XLSX, Format::XLS]) && $input_format == $output_format) {
             // If LibXL exists, consider it first. LibXL support only when input format and output format are the same
             return LibXLWriter::class;
-        }  else if (in_array($output_format, [Format::CSV, Format::ODS])) {
+        }  else if (in_array($output_format, [Format::CSV, Format::ODS]) && in_array($input_format, [Format::XLSX, Format::CSV, Format::ODS, null])) {
             // If output is CSV/ODS, use Spout
             return SpoutWriter::class;
         } else {
