@@ -4,17 +4,15 @@ namespace Imtigger\OneExcel\Writer;
 use Imtigger\OneExcel\ColumnType;
 use Imtigger\OneExcel\Format;
 use Imtigger\OneExcel\OneExcelWriterInterface;
-use PHPExcel_Cell_DataType;
-use PHPExcel_IOFactory;
 
 class PHPExcelWriter extends OneExcelWriter implements OneExcelWriterInterface
 {
     public static $input_format_supported = [Format::XLSX, Format::XLS, Format::CSV, Format::ODS];
     public static $output_format_supported = [Format::XLSX, Format::XLS, Format::CSV];
     public static $input_output_same_format = false;
-    /** @var \PHPExcel $book */
+    /** @var \PhpOffice\PhpSpreadsheet\Spreadsheet $book */
     private $book;
-    /** @var \PHPExcel_Worksheet $sheet */
+    /** @var \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet $sheet */
     private $sheet;
 
     public function create($output_format = Format::XLSX)
@@ -22,7 +20,7 @@ class PHPExcelWriter extends OneExcelWriter implements OneExcelWriterInterface
         $this->checkFormatSupported($output_format);
         $this->output_format = $output_format;
 
-        $this->book = new \PHPExcel();
+        $this->book = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
         $this->sheet = $this->book->getActiveSheet();
     }
 
@@ -33,7 +31,7 @@ class PHPExcelWriter extends OneExcelWriter implements OneExcelWriterInterface
         $this->input_format = $input_format;
         $this->output_format = $output_format;
 
-        $objReader = PHPExcel_IOFactory::createReader($this->getFormatCode($this->input_format));
+        $objReader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader($this->getFormatCode($this->input_format));
 
         $this->book = $objReader->load($filename);
         $this->sheet = $this->book->getActiveSheet();
@@ -41,7 +39,8 @@ class PHPExcelWriter extends OneExcelWriter implements OneExcelWriterInterface
 
     public function writeCell($row_num, $column_num, $data, $data_type = null)
     {
-        $cell = $this->sheet->getCellByColumnAndRow($column_num, $row_num);
+        // PhpSpreadSheet: Column indexes are now based on 1, row indexes also based on 1
+        $cell = $this->sheet->getCellByColumnAndRow($column_num + 1, $row_num);
         $cell->setValueExplicit($data, $this->getCellDataType($data_type));
         if ($data_type != null) {
             $cell->getStyle()->getNumberFormat()->setFormatCode($this->getCellFormat($data_type));
@@ -71,8 +70,8 @@ class PHPExcelWriter extends OneExcelWriter implements OneExcelWriterInterface
     /* Private helpers */
     private function saveFile($path)
     {
-        /** @var \PHPExcel_Writer_Abstract $objWriter */
-        $objWriter = PHPExcel_IOFactory::createWriter($this->book, $this->getFormatCode($this->output_format));
+        /** @var \PhpOffice\PhpSpreadsheet\Writer\BaseWriter $objWriter */
+        $objWriter = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($this->book, $this->getFormatCode($this->output_format));
         $objWriter->setPreCalculateFormulas(false);
         $objWriter->save($path);
     }
@@ -81,13 +80,13 @@ class PHPExcelWriter extends OneExcelWriter implements OneExcelWriterInterface
     {
         switch ($format) {
             case Format::XLSX:
-                return 'Excel2007';
+                return 'Xlsx';
             case Format::XLS:
-                return 'Excel5';
+                return 'Xls';
             case Format::CSV:
-                return 'CSV';
+                return 'Csv';
             case Format::ODS:
-                return 'OOCalc';
+                return 'Ods';
         }
         throw new \Exception("Unknown format {$format}");
     }
@@ -96,7 +95,7 @@ class PHPExcelWriter extends OneExcelWriter implements OneExcelWriterInterface
     {
         switch ($internal_format) {
             case ColumnType::STRING:
-                return \PHPExcel_Style_NumberFormat::FORMAT_TEXT;
+                return \PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_TEXT;
             case ColumnType::TIME:
                 return 'hh:mm:ss';
             case ColumnType::DATE:
@@ -104,9 +103,9 @@ class PHPExcelWriter extends OneExcelWriter implements OneExcelWriterInterface
             case ColumnType::DATETIME:
                 return 'yyyy-mm-dd hh:mm:ss';
             case ColumnType::INTEGER:
-                return \PHPExcel_Style_NumberFormat::FORMAT_NUMBER;
+                return \PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER;
             case ColumnType::NUMERIC:
-                return \PHPExcel_Style_NumberFormat::FORMAT_NUMBER_00;
+                return \PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_00;
             case ColumnType::FORMULA:
                 return null;
         }
@@ -117,17 +116,17 @@ class PHPExcelWriter extends OneExcelWriter implements OneExcelWriterInterface
     {
         switch ($internal_format) {
             case ColumnType::STRING:
-                return PHPExcel_Cell_DataType::TYPE_STRING;
+                return \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING;
             case ColumnType::INTEGER:
             case ColumnType::NUMERIC:
-                return PHPExcel_Cell_DataType::TYPE_NUMERIC;
+                return \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_NUMERIC;
             case ColumnType::BOOLEAN:
-                return PHPExcel_Cell_DataType::TYPE_BOOL;
+                return \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_BOOL;
             case ColumnType::FORMULA:
-                return PHPExcel_Cell_DataType::TYPE_FORMULA;
+                return \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_FORMULA;
             case ColumnType::NULL:
-                return PHPExcel_Cell_DataType::TYPE_NULL;
+                return \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_NULL;
         }
-        return PHPExcel_Cell_DataType::TYPE_STRING;
+        return \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING;
     }
 }

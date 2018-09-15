@@ -1,19 +1,15 @@
 <?php
 namespace Imtigger\OneExcel\Writer;
 
-use Box\Spout\Reader\AbstractReader;
-use Box\Spout\Writer\AbstractMultiSheetsWriter;
 use Imtigger\OneExcel\Format;
 use Imtigger\OneExcel\OneExcelWriterInterface;
-use Box\Spout\Reader\ReaderFactory;
-use Box\Spout\Writer\WriterFactory;
 
 class SpoutWriter extends OneExcelWriter implements OneExcelWriterInterface
 {
     public static $input_format_supported = [Format::XLSX, Format::CSV, Format::ODS];
     public static $output_format_supported = [Format::XLSX, Format::CSV, Format::ODS];
     public static $input_output_same_format = false;
-    /** @var AbstractMultiSheetsWriter $writer */
+    /** @var \Box\Spout\Writer\AbstractMultiSheetsWriter $writer */
     private $writer;
     private $last_row = 0;
     private $data = [];
@@ -24,7 +20,7 @@ class SpoutWriter extends OneExcelWriter implements OneExcelWriterInterface
         $this->checkFormatSupported($output_format);
         $this->output_format = $output_format;
 
-        $this->writer = WriterFactory::create($this->output_format);
+        $this->writer = \Box\Spout\Writer\WriterFactory::create($this->output_format);
         if ($this->output_mode == 'stream') {
             $this->writer->openToBrowser($this->output_filename);
         } elseif ($this->output_mode == 'download' || $this->output_mode == null) {
@@ -43,8 +39,8 @@ class SpoutWriter extends OneExcelWriter implements OneExcelWriterInterface
         $this->create($output_format);
 
         // Copy data into new sheet
-        /** @var AbstractReader $reader */
-        $reader = ReaderFactory::create($input_format);
+        /** @var \Box\Spout\Writer\AbstractReader $reader */
+        $reader = \Box\Spout\Reader\ReaderFactory::create($input_format);
         $reader->open($filename);
         $reader->setShouldFormatDates(true);
 

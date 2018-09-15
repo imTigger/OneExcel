@@ -2,14 +2,13 @@
 
 use Imtigger\OneExcel\ColumnType;
 use Imtigger\OneExcel\Driver;
-use Imtigger\OneExcel\Format;
 use PHPUnit\Framework\TestCase;
 
 final class PHPExcelWriterTest extends TestCase {
 
     private function getCellValue($filename, $cellName)
     {
-        $objReader = PHPExcel_IOFactory::createReaderForFile($filename);
+        $objReader = \PhpOffice\PhpSpreadsheet\IOFactory::createReaderForFile($filename);
         $objExcel = $objReader->load($filename);
 
         $value = $objExcel->getActiveSheet()->getCell($cellName)->getValue();

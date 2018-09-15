@@ -9,7 +9,7 @@ final class FCsvWriterTest extends TestCase {
 
     private function getCellValue($filename, $cellName)
     {
-        $objReader = PHPExcel_IOFactory::createReaderForFile($filename);
+        $objReader = \PhpOffice\PhpSpreadsheet\IOFactory::createReaderForFile($filename);
         $objExcel = $objReader->load($filename);
 
         $value = $objExcel->getActiveSheet()->getCell($cellName)->getValue();

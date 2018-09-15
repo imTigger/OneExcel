@@ -3,16 +3,13 @@ namespace Imtigger\OneExcel\Reader;
 
 use Imtigger\OneExcel\Format;
 use Imtigger\OneExcel\OneExcelReaderInterface;
-use PHPExcel_IOFactory;
-use PHPExcel_CachedObjectStorageFactory;
-use PHPExcel_Settings;
 
 class PHPExcelReader extends OneExcelReader implements OneExcelReaderInterface
 {
     public static $input_format_supported = [Format::XLSX, Format::XLS, Format::CSV, Format::ODS];
-    /** @var \PHPExcel $book */
+    /** @var \PhpOffice\PhpSpreadsheet\Spreadsheet $book */
     private $book;
-    /** @var \PHPExcel_Worksheet $sheet */
+    /** @var \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet $sheet */
     private $sheet;
 
     public function load($filename, $input_format = Format::AUTO)
@@ -21,11 +18,9 @@ class PHPExcelReader extends OneExcelReader implements OneExcelReaderInterface
 
         $this->input_format = $input_format;
 
-        $cacheMethod = PHPExcel_CachedObjectStorageFactory:: cache_to_phpTemp;
-        $cacheSettings = array( ' memoryCacheSize ' => '8MB');
-        PHPExcel_Settings::setCacheStorageMethod($cacheMethod, $cacheSettings);
+        // TODO: Re-enable cache
         
-        $objReader = PHPExcel_IOFactory::createReader($this->getFormatCode($this->input_format));
+        $objReader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader($this->getFormatCode($this->input_format));
         $objReader->setReadDataOnly(true);
 
         $this->book = $objReader->load($filename);
@@ -39,11 +34,11 @@ class PHPExcelReader extends OneExcelReader implements OneExcelReaderInterface
         foreach ($rowIterator As $row) {
             $cellIterator = $row->getCellIterator();
             $data = [];
-            /** @var \PHPExcel_Cell $cell */
+            /** @var \PhpOffice\PhpSpreadsheet\Cell\Cell $cell */
             foreach ($cellIterator As $cell) {
                 $value = $cell->getValue();
 
-                if ($value instanceof \PHPExcel_RichText) {
+                if ($value instanceof \PhpOffice\PhpSpreadsheet\RichText\RichText) {
                     $value = $value->getPlainText();
                 }
 
@@ -64,13 +59,13 @@ class PHPExcelReader extends OneExcelReader implements OneExcelReaderInterface
     {
         switch ($format) {
             case Format::XLSX:
-                return 'Excel2007';
+                return 'Xlsx';
             case Format::XLS:
-                return 'Excel5';
+                return 'Xls';
             case Format::CSV:
-                return 'CSV';
+                return 'Csv';
             case Format::ODS:
-                return 'OOCalc';
+                return 'Ods';
         }
         throw new \Exception("Unknown format {$format}");
     }
