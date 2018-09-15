@@ -181,23 +181,14 @@ class OneExcelWriterFactory
      */
     private function getDriverByFormat($output_format, $input_format = null)
     {
-        if (in_array($output_format, [Format::XLSX, Format::XLS])) {
-            // If LibXL exists, consider it first
-            if (class_exists('ExcelBook')) {
-                // LibXL support only when input format and output format are the same
-                if ($input_format == null || $input_format == $output_format) {
-                    return LibXLWriter::class;
-                } else {
-                    return PhpSpreadsheetWriter::class;
-                }
-            } else {
-                return PhpSpreadsheetWriter::class;
-            }
-        } else if (in_array($output_format, [Format::CSV, Format::ODS]) && $input_format == null) {
-            return SpoutWriter::class;
-        }  else if (in_array($output_format, [Format::CSV, Format::ODS]) && in_array($input_format, [Format::ODS])) {
+        if (class_exists('ExcelBook') && in_array($output_format, [Format::XLSX, Format::XLS]) && $input_format == $output_format) {
+            // If LibXL exists, consider it first. LibXL support only when input format and output format are the same
+            return LibXLWriter::class;
+        }  else if (in_array($output_format, [Format::CSV, Format::ODS])) {
+            // If output is CSV/ODS, use Spout
             return SpoutWriter::class;
         } else {
+            // Otherwise use PhpSpreadsheet
             return PhpSpreadsheetWriter::class;
         }
     }
