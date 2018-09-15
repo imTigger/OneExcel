@@ -4,7 +4,7 @@ namespace Imtigger\OneExcel\Reader;
 use Imtigger\OneExcel\Format;
 use Imtigger\OneExcel\OneExcelReaderInterface;
 
-class PHPExcelReader extends OneExcelReader implements OneExcelReaderInterface
+class PhpSpreadsheetReader extends OneExcelReader implements OneExcelReaderInterface
 {
     public static $input_format_supported = [Format::XLSX, Format::XLS, Format::CSV, Format::ODS];
     /** @var \PhpOffice\PhpSpreadsheet\Spreadsheet $book */

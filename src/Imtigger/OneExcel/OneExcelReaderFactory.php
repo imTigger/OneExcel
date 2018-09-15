@@ -4,7 +4,7 @@ namespace Imtigger\OneExcel;
 use Imtigger\OneExcel\Reader\FCsvReader;
 use Imtigger\OneExcel\Reader\LibXLReader;
 use Imtigger\OneExcel\Reader\OneExcelReader;
-use Imtigger\OneExcel\Reader\PHPExcelReader;
+use Imtigger\OneExcel\Reader\PhpSpreadsheetReader;
 use Imtigger\OneExcel\Reader\SpoutReader;
 
 class OneExcelReaderFactory
@@ -108,7 +108,7 @@ class OneExcelReaderFactory
         switch ($driver) {
             case Driver::PHPEXCEL:
             case Driver::PHPSPREADSHEET:
-                return PHPExcelReader::class;
+                return PhpSpreadsheetReader::class;
             case Driver::LIBXL:
                 return LibXLReader::class;
             case Driver::SPOUT:
@@ -126,6 +126,6 @@ class OneExcelReaderFactory
      */
     private function getDriverByFormat($output_format)
     {
-        return PHPExcelReader::class;
+        return PhpSpreadsheetReader::class;
     }
 }

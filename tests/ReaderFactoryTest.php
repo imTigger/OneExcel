@@ -49,7 +49,7 @@ final class ReaderFactoryTest extends TestCase
     public function testCreatePHPExcel()
     {
         $excel = \Imtigger\OneExcel\OneExcelReaderFactory::create()->fromFile(__DIR__ . '/01simple.xlsx')->withDriver(Driver::PHPEXCEL)->make();
-        $this->assertInstanceOf(\Imtigger\OneExcel\Reader\PHPExcelReader::class, $excel);
+        $this->assertInstanceOf(\Imtigger\OneExcel\Reader\PhpSpreadsheetReader::class, $excel);
     }
 
     public function testCreateLibXL()

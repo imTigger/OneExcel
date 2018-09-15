@@ -5,7 +5,7 @@ use Imtigger\OneExcel\ColumnType;
 use Imtigger\OneExcel\Format;
 use Imtigger\OneExcel\OneExcelWriterInterface;
 
-class PHPExcelWriter extends OneExcelWriter implements OneExcelWriterInterface
+class PhpSpreadsheetWriter extends OneExcelWriter implements OneExcelWriterInterface
 {
     public static $input_format_supported = [Format::XLSX, Format::XLS, Format::CSV, Format::ODS];
     public static $output_format_supported = [Format::XLSX, Format::XLS, Format::CSV];

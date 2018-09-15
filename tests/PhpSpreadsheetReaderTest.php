@@ -3,11 +3,11 @@
 use Imtigger\OneExcel\Driver;
 use PHPUnit\Framework\TestCase;
 
-final class PHPExcelReaderTest extends TestCase {
+final class PhpSpreadsheetReaderTest extends TestCase {
     public function testReader()
     {
         $excel = \Imtigger\OneExcel\OneExcelReaderFactory::create()->fromFile(__DIR__ . '/01simple.xlsx')->withDriver(Driver::PHPEXCEL)->make();
-        $this->assertInstanceOf(\Imtigger\OneExcel\Reader\PHPExcelReader::class, $excel);
+        $this->assertInstanceOf(\Imtigger\OneExcel\Reader\PhpSpreadsheetReader::class, $excel);
 
         $i = 1;
         foreach ($excel->row() as $row) {

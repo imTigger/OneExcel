@@ -50,7 +50,7 @@ final class WriterFactoryTest extends TestCase
     public function testCreatePHPExcel()
     {
         $excel = \Imtigger\OneExcel\OneExcelWriterFactory::create()->toFile('test.xlsx')->withDriver(Driver::PHPEXCEL)->make();
-        $this->assertInstanceOf(\Imtigger\OneExcel\Writer\PHPExcelWriter::class, $excel);
+        $this->assertInstanceOf(\Imtigger\OneExcel\Writer\PhpSpreadsheetWriter::class, $excel);
     }
 
     public function testCreateLibXL()

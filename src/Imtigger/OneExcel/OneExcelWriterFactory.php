@@ -4,7 +4,7 @@ namespace Imtigger\OneExcel;
 use Imtigger\OneExcel\Writer\FCsvWriter;
 use Imtigger\OneExcel\Writer\LibXLWriter;
 use Imtigger\OneExcel\Writer\OneExcelWriter;
-use Imtigger\OneExcel\Writer\PHPExcelWriter;
+use Imtigger\OneExcel\Writer\PhpSpreadsheetWriter;
 use Imtigger\OneExcel\Writer\SpoutWriter;
 
 class OneExcelWriterFactory
@@ -161,7 +161,7 @@ class OneExcelWriterFactory
         switch ($driver) {
             case Driver::PHPEXCEL:
             case Driver::PHPSPREADSHEET:
-                return PHPExcelWriter::class;
+                return PhpSpreadsheetWriter::class;
             case Driver::LIBXL:
                 return LibXLWriter::class;
             case Driver::SPOUT:
@@ -186,17 +186,17 @@ class OneExcelWriterFactory
                 if ($input_format == null || $input_format == $output_format) {
                     return LibXLWriter::class;
                 } else {
-                    return PHPExcelWriter::class;
+                    return PhpSpreadsheetWriter::class;
                 }
             } else {
-                return PHPExcelWriter::class;
+                return PhpSpreadsheetWriter::class;
             }
         } else if (in_array($output_format, [Format::CSV, Format::ODS]) && $input_format == null) {
             return SpoutWriter::class;
         }  else if (in_array($output_format, [Format::CSV, Format::ODS]) && in_array($input_format, [Format::ODS])) {
             return SpoutWriter::class;
         } else {
-            return PHPExcelWriter::class;
+            return PhpSpreadsheetWriter::class;
         }
     }
 }

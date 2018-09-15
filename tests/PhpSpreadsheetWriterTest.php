@@ -4,7 +4,7 @@ use Imtigger\OneExcel\ColumnType;
 use Imtigger\OneExcel\Driver;
 use PHPUnit\Framework\TestCase;
 
-final class PHPExcelWriterTest extends TestCase {
+final class PhpSpreadsheetWriterTest extends TestCase {
 
     private function getCellValue($filename, $cellName)
     {
@@ -23,7 +23,7 @@ final class PHPExcelWriterTest extends TestCase {
     {
         $path = 'tests/test-phpexcel.xlsx';
         $excel = \Imtigger\OneExcel\OneExcelWriterFactory::create()->toFile($path)->withDriver(Driver::PHPEXCEL)->make();
-        $this->assertInstanceOf(\Imtigger\OneExcel\Writer\PHPExcelWriter::class, $excel);
+        $this->assertInstanceOf(\Imtigger\OneExcel\Writer\PhpSpreadsheetWriter::class, $excel);
 
         $excel->writeCell(1, 0, 'Hello');
         $excel->writeCell(2, 1, 'World');
@@ -49,7 +49,7 @@ final class PHPExcelWriterTest extends TestCase {
         $template = __DIR__ . '/../templates/template.xlsx';
         $path = 'tests/test-phpexcel.xlsx';
         $excel = \Imtigger\OneExcel\OneExcelWriterFactory::create()->fromFile($template)->toFile($path)->withDriver(Driver::PHPEXCEL)->make();
-        $this->assertInstanceOf(\Imtigger\OneExcel\Writer\PHPExcelWriter::class, $excel);
+        $this->assertInstanceOf(\Imtigger\OneExcel\Writer\PhpSpreadsheetWriter::class, $excel);
 
         $excel->writeCell(2, 0, 'Hello');
         $excel->writeCell(3, 1, 'World');
