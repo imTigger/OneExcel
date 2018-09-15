@@ -160,6 +160,7 @@ class OneExcelWriterFactory
     private function getDriverByName($driver) {
         switch ($driver) {
             case Driver::PHPEXCEL:
+            case Driver::PHPSPREADSHEET:
                 return PHPExcelWriter::class;
             case Driver::LIBXL:
                 return LibXLWriter::class;

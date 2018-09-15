@@ -107,6 +107,7 @@ class OneExcelReaderFactory
     private function getDriverByName($driver) {
         switch ($driver) {
             case Driver::PHPEXCEL:
+            case Driver::PHPSPREADSHEET:
                 return PHPExcelReader::class;
             case Driver::LIBXL:
                 return LibXLReader::class;
