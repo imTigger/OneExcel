@@ -181,15 +181,33 @@ class OneExcelWriterFactory
      */
     private function getDriverByFormat($output_format, $input_format = null)
     {
-        if (class_exists('ExcelBook') && in_array($output_format, [Format::XLSX, Format::XLS]) && ($input_format == $output_format || $input_format == null)) {
-            // If LibXL exists, consider it first. LibXL support only when input format and output format are the same
-            return LibXLWriter::class;
-        }  else if (in_array($output_format, [Format::CSV, Format::ODS]) && in_array($input_format, [Format::XLSX, Format::CSV, Format::ODS, null])) {
-            // If output is CSV/ODS, use Spout
-            return SpoutWriter::class;
+        if ($input_format == null) {
+            // If template is not used, we don't concern about formatting, use Spout more aggressively
+            if (in_array($output_format, [Format::XLSX, Format::ODS, Format::CSV])) {
+                // If input/output is supported by Spout, use it first
+                return SpoutWriter::class;
+            } else if (class_exists('ExcelBook') && in_array($output_format, [Format::XLS])) {
+                // If LibXL exists, consider it first. LibXL support only when input format and output format are the same
+                return LibXLWriter::class;
+            }  else {
+                // Otherwise use PhpSpreadsheet
+                return PhpSpreadsheetWriter::class;
+            }
         } else {
-            // Otherwise use PhpSpreadsheet
-            return PhpSpreadsheetWriter::class;
+            // If template is used, we only use Spout when CSV is the input (i.e. Don't care about formatting) or only Spout support it
+            if (class_exists('ExcelBook') && in_array($output_format, [Format::XLSX, Format::XLS]) && $input_format == $output_format) {
+                // If LibXL exists, use it first. LibXL support only when input format and output format are the same
+                return LibXLWriter::class;
+            }  else if (in_array($input_format, [Format::CSV]) && in_array($output_format, [Format::XLSX, Format::ODS, Format::CSV])) {
+                // If input is CSV, use Spout as we don't care about formatting,
+                return SpoutWriter::class;
+            }  else if (in_array($input_format, [Format::XLSX, Format::ODS, Format::CSV]) && in_array($output_format, [Format::ODS])) {
+                // If output is ODS, no any other driver support it, we have no choice but use Spout
+                return SpoutWriter::class;
+            } else {
+                // Otherwise use PhpSpreadsheet
+                return PhpSpreadsheetWriter::class;
+            }
         }
     }
 }
