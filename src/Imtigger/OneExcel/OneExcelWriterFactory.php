@@ -53,7 +53,7 @@ class OneExcelWriterFactory
      */
     public function toFile($filename, $format = Format::AUTO) {
         $this->output_filename = $filename;
-        $this->output_mode = 'file';
+        $this->output_mode = OneExcelWriter::OUTPUT_MODE_FILE;
         $this->output_format = $format;
 
         return $this;
@@ -66,7 +66,7 @@ class OneExcelWriterFactory
      */
     public function toStream($filename, $format = Format::AUTO) {
         $this->output_filename = $filename;
-        $this->output_mode = 'stream';
+        $this->output_mode = OneExcelWriter::OUTPUT_MODE_STREAM;
         $this->output_format = $format;
 
         return $this;
@@ -79,7 +79,7 @@ class OneExcelWriterFactory
      */
     public function toDownload($filename, $format = Format::AUTO) {
         $this->output_filename = $filename;
-        $this->output_mode = 'download';
+        $this->output_mode = OneExcelWriter::OUTPUT_MODE_DOWNLOAD;
         $this->output_format = $format;
 
         return $this;
@@ -87,6 +87,7 @@ class OneExcelWriterFactory
 
     /**
      * @return OneExcelWriter
+     * @throws \Exception
      */
     public function make() {
         if (!empty($this->input_filename)) {
@@ -121,6 +122,7 @@ class OneExcelWriterFactory
     /**
      * @param $input_format
      * @param $filename
+     * @throws \Exception
      */
     private function autoDetectFormatFromFilename(&$input_format, $filename)
     {

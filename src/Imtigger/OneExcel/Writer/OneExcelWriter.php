@@ -6,6 +6,10 @@ use Imtigger\OneExcel\OneExcelWriterInterface;
 
 abstract class OneExcelWriter implements OneExcelWriterInterface
 {
+    const OUTPUT_MODE_FILE = 'file';
+    const OUTPUT_MODE_DOWNLOAD = 'download';
+    const OUTPUT_MODE_STREAM = 'stream';
+
     public static $input_format_supported = [];
     public static $output_format_supported = [];
     public static $input_output_same_format;
@@ -13,7 +17,7 @@ abstract class OneExcelWriter implements OneExcelWriterInterface
     protected $input_format;
     protected $output_format;
 
-    protected $output_mode = 'file';
+    protected $output_mode = self::OUTPUT_MODE_FILE;
     protected $output_filename;
 
     protected function isInputFormatSupported($format)

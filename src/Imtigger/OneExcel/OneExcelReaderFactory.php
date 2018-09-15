@@ -45,6 +45,7 @@ class OneExcelReaderFactory
 
     /**
      * @return OneExcelReader
+     * @throws \Exception
      */
     public function make() {
         if (!empty($this->input_filename)) {
@@ -68,6 +69,7 @@ class OneExcelReaderFactory
     /**
      * @param $input_format
      * @param $filename
+     * @throws \Exception
      */
     private function autoDetectFormatFromFilename(&$input_format, $filename)
     {
@@ -121,7 +123,6 @@ class OneExcelReaderFactory
 
     /**
      * @param $output_format
-     * @param null $input_format
      * @return string
      */
     private function getDriverByFormat($output_format)

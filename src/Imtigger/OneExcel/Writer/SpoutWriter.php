@@ -21,12 +21,12 @@ class SpoutWriter extends OneExcelWriter implements OneExcelWriterInterface
         $this->output_format = $output_format;
 
         $this->writer = \Box\Spout\Writer\WriterFactory::create($this->output_format);
-        if ($this->output_mode == 'stream') {
+        if ($this->output_mode == OneExcelWriter::OUTPUT_MODE_STREAM) {
             $this->writer->openToBrowser($this->output_filename);
-        } elseif ($this->output_mode == 'download' || $this->output_mode == null) {
+        } elseif ($this->output_mode == OneExcelWriter::OUTPUT_MODE_DOWNLOAD || $this->output_mode == null) {
             $this->temp_file = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'spout-' . time() . '.tmp';
             $this->writer->openToFile($this->temp_file);
-        } elseif ($this->output_mode == 'file') {
+        } elseif ($this->output_mode == OneExcelWriter::OUTPUT_MODE_FILE) {
             $this->writer->openToFile($this->output_filename);
         }
     }
@@ -39,7 +39,7 @@ class SpoutWriter extends OneExcelWriter implements OneExcelWriterInterface
         $this->create($output_format);
 
         // Copy data into new sheet
-        /** @var \Box\Spout\Writer\AbstractReader $reader */
+        /** @var \Box\Spout\Reader\AbstractReader $reader */
         $reader = \Box\Spout\Reader\ReaderFactory::create($input_format);
         $reader->open($filename);
         $reader->setShouldFormatDates(true);
@@ -89,7 +89,7 @@ class SpoutWriter extends OneExcelWriter implements OneExcelWriterInterface
     {
         $this->close();
 
-        if ($this->output_mode == 'download') {
+        if ($this->output_mode == OneExcelWriter::OUTPUT_MODE_DOWNLOAD) {
             header('Content-Type: ' . $this->getFormatMime($this->output_format));
             header('Content-Disposition: attachment; filename="' . $this->output_filename . '"');
             header('Content-Transfer-Encoding: binary');

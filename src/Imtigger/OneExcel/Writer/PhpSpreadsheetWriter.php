@@ -54,7 +54,7 @@ class PhpSpreadsheetWriter extends OneExcelWriter implements OneExcelWriterInter
 
     public function output()
     {
-        if ($this->output_mode == 'stream' || $this->output_mode == 'download') {
+        if ($this->output_mode == OneExcelWriter::OUTPUT_MODE_STREAM || $this->output_mode == OneExcelWriter::OUTPUT_MODE_DOWNLOAD) {
             header('Content-Type: ' . $this->getFormatMime($this->output_format));
             header('Content-Disposition: attachment; filename="' . $this->output_filename . '"');
             header('Content-Transfer-Encoding: binary');
@@ -62,7 +62,7 @@ class PhpSpreadsheetWriter extends OneExcelWriter implements OneExcelWriterInter
             header('Pragma: no-cache');
 
             $this->saveFile('php://output');
-        } elseif ($this->output_mode == 'file') {
+        } elseif ($this->output_mode == OneExcelWriter::OUTPUT_MODE_FILE) {
             $this->saveFile($this->output_filename);
         }
     }

@@ -1,4 +1,5 @@
-<?php
+<?php /** @noinspection ALL */
+
 namespace Imtigger\OneExcel\Writer;
 
 use Imtigger\OneExcel\Format;
@@ -19,7 +20,7 @@ class FCsvWriter extends OneExcelWriter implements OneExcelWriterInterface
         $this->checkFormatSupported($output_format);
         $this->output_format = $output_format;
 
-        if ($this->output_mode == 'stream') {
+        if ($this->output_mode == OneExcelWriter::OUTPUT_MODE_STREAM) {
             header('Content-Type: ' . $this->getFormatMime($this->output_format));
             header('Content-Disposition: attachment; filename="' . $this->output_filename . '"');
             header('Content-Transfer-Encoding: binary');
@@ -27,10 +28,10 @@ class FCsvWriter extends OneExcelWriter implements OneExcelWriterInterface
             header('Pragma: no-cache');
 
             $this->handle = fopen("php://output", 'w');
-        } elseif ($this->output_mode == 'download' || $this->output_mode == null) {
+        } elseif ($this->output_mode == OneExcelWriter::OUTPUT_MODE_DOWNLOAD || $this->output_mode == null) {
             $this->temp_file = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'fputcsv-' . time() . '.tmp';
             $this->handle = fopen($this->temp_file, 'w');
-        } elseif ($this->output_mode == 'file') {
+        } elseif ($this->output_mode == OneExcelWriter::OUTPUT_MODE_FILE) {
             $this->handle = fopen($this->output_filename, 'w');
         }
     }
@@ -85,7 +86,7 @@ class FCsvWriter extends OneExcelWriter implements OneExcelWriterInterface
     {
         $this->close();
 
-        if ($this->output_mode == 'download') {
+        if ($this->output_mode == OneExcelWriter::OUTPUT_MODE_DOWNLOAD) {
             header('Content-Type: ' . $this->getFormatMime($this->output_format));
             header('Content-Disposition: attachment; filename="' . $this->output_filename . '"');
             header('Content-Transfer-Encoding: binary');
@@ -100,7 +101,7 @@ class FCsvWriter extends OneExcelWriter implements OneExcelWriterInterface
 
     public function download()
     {
-        $this->output_mode = 'download';
+        $this->output_mode = OneExcelWriter::OUTPUT_MODE_DOWNLOAD;
         $this->output();
     }
 
