@@ -4,10 +4,9 @@ require __DIR__ . '/../vendor/autoload.php';
 use Imtigger\OneExcel\OneExcelWriterFactory;
 use Imtigger\OneExcel\ColumnType;
 use Imtigger\OneExcel\Driver;
-use Imtigger\OneExcel\Format;
 
-$output = basename(__FILE__ . '.ods');
-$excel = OneExcelWriterFactory::create()->toFile($output)->make();
+$output = basename(__FILE__ . '.xlsx');
+$excel = OneExcelWriterFactory::create()->toFile($output)->withDriver(Driver::SPOUT)->make();
 
 $excel->writeCell(1, 0, 'Hello');
 $excel->writeCell(2, 1, 'World');

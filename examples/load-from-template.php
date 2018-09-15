@@ -3,8 +3,6 @@ require __DIR__ . '/../vendor/autoload.php';
 
 use Imtigger\OneExcel\OneExcelWriterFactory;
 use Imtigger\OneExcel\ColumnType;
-use Imtigger\OneExcel\Driver;
-use Imtigger\OneExcel\Format;
 
 $template = __DIR__ . '/../templates/template.xlsx';
 $output = basename(__FILE__ . '.xlsx');
