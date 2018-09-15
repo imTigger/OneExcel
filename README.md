@@ -69,24 +69,26 @@ $excel->output();
 
 #### With Template
 
-|      | XLSX  | XLS   | ODS   | CSV   | From |
-|------|-------|-------|-------|-------|------|
-| XLSX | LibXL | PhpSS | Spout | PhpSS |      | 
-| XLS  | PhpSS | LibXL | -     | PhpSS |      |
-| ODS  | PhpSS | PhpSS | Spout | PhpSS |      |
-| CSV  | Spout | PhpSS | Spout | Spout |      |
-| To   |       |       |       |       |      |
+|           | To XLSX        | To XLS         | To ODS    | To CSV         | 
+|-----------|----------------|----------------|-----------|----------------|
+| From XLSX | LibXL          | PhpSpreadSheet | Spout     | PhpSpreadSheet |
+| From XLS  | PhpSpreadSheet | LibXL          | -         | PhpSpreadSheet |
+| From ODS  | PhpSpreadSheet | PhpSpreadSheet | Spout     | PhpSpreadSheet |
+| From CSV  | Spout          | PhpSpreadSheet | Spout     | Spout          |
 
-##### Without Template
 
-|      | Driver | 
-|------|--------|
-| XLSX | Spout  | 
-| XLS  | LibXL  |
-| ODS  | Spout  |
-| CSV  | Spout  |
+#### Without Template
+
+|         | Driver | 
+|---------|--------|
+| To XLSX | Spout  | 
+| To XLS  | LibXL  |
+| To ODS  | Spout  |
+| To CSV  | Spout  |
 
 * LibXL fallbacks to PhpSpreadSheet if not present
+* LibXL only support input/output with same format
+* XLS to ODS is not supported by any drivers
 
 ## Reader
 
