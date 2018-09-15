@@ -105,8 +105,16 @@ final class WriterFactoryTest extends TestCase
 
     public function testCreateFromFileConvert()
     {
-        $excel = \Imtigger\OneExcel\OneExcelWriterFactory::create()->fromFile(__DIR__ . '/../templates/template.xlsx')->toFile('test.csv')->make();
-        $this->assertInstanceOf(\Imtigger\OneExcel\Writer\OneExcelWriter::class, $excel);
+        $formats = ['xlsx', 'xls', 'ods', 'csv'];
+
+        foreach ($formats as $input_format) {
+            foreach ($formats as $output_format) {
+                if ($input_format == 'xls' && $output_format == 'ods') continue; // No driver support xls to ods convention
+
+                $excel = \Imtigger\OneExcel\OneExcelWriterFactory::create()->fromFile(__DIR__ . '/../templates/template.' . $input_format)->toFile('test.' . $output_format)->make();
+                $this->assertInstanceOf(\Imtigger\OneExcel\Writer\OneExcelWriter::class, $excel);
+            }
+        }
     }
 
     public function testCreateFromFileConvertWithDriver()
