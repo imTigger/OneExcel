@@ -45,7 +45,7 @@ $excel->writeRow(4, ['One', 'Excel']);
 $excel->writeCell(4, 2, 'Test');
 
 $excel->output();
-```
+```Selection](driver.md)
 
 ### Advanced Usage
 
@@ -65,31 +65,6 @@ $excel->writeCell(4, 2, 'Test');
 $excel->output();
 ```
 
-### Writer Default Driver
-
-#### With Template
-
-|         | From XLSX      | From XLS       | From ODS       | From CSV       |
-|---------|----------------|----------------|----------------|----------------|
-| To XLSX | LibXL          | PhpSpreadSheet | PhpSpreadSheet | Spout          |
-| To XLS  | PhpSpreadSheet | LibXL          | PhpSpreadSheet | PhpSpreadSheet |
-| To ODS  | Spout          | Not Supported  | Spout          | Spout          |
-| To CSV  | PhpSpreadSheet | PhpSpreadSheet | PhpSpreadSheet | Spout          |
-
-
-#### Without Template
-
-|         | Driver | 
-|---------|--------|
-| To XLSX | Spout  | 
-| To XLS  | LibXL  |
-| To ODS  | Spout  |
-| To CSV  | Spout  |
-
-* LibXL fallbacks to PhpSpreadSheet if not present
-* LibXL only support input/output with same format
-* XLS to ODS is not supported by any drivers
-
 ## Reader
 
 (Version 0.6+)
@@ -106,6 +81,10 @@ foreach ($excel->row() as $row) {
 
 $excel->close();
 ```
+
+## Documents
+
+[Auto Driver Selection](https://github.com/imTigger/OneExcel/wiki/Auto-Writer-Driver-Selection)
 
 ## Known Issues
 
