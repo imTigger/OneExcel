@@ -31,9 +31,7 @@ $ composer require imtigger/oneexcel
 
 ## Writer
 
-### Documentations
-
-#### Basic Usage
+### Basic Usage
 
 ```php
 $excel = OneExcelWriterFactory::create()
@@ -44,11 +42,12 @@ $excel->writeCell(1, 0, 'Hello');
 $excel->writeCell(2, 1, 'World');
 $excel->writeCell(3, 2, 3.141592653, ColumnType::NUMERIC);
 $excel->writeRow(4, ['One', 'Excel']);
+$excel->writeCell(4, 2, 'Test');
 
 $excel->output();
 ```
 
-#### Advanced Usage
+### Advanced Usage
 
 ```php
 $excel = OneExcelWriterFactory::create()
@@ -61,9 +60,35 @@ $excel->writeCell(1, 0, 'Hello');
 $excel->writeCell(2, 1, 'World');
 $excel->writeCell(3, 2, 3.141592653, ColumnType::NUMERIC);
 $excel->writeRow(4, ['One', 'Excel']);
+$excel->writeCell(4, 2, 'Test');
 
 $excel->output();
 ```
+
+### Writer Default Driver
+
+#### With Template
+
+|         | From XLSX      | From XLS       | From ODS       | From CSV       |
+|---------|----------------|----------------|----------------|----------------|
+| To XLSX | LibXL          | PhpSpreadSheet | PhpSpreadSheet | Spout          |
+| To XLS  | PhpSpreadSheet | LibXL          | PhpSpreadSheet | PhpSpreadSheet |
+| To ODS  | Spout          | Not Supported  | Spout          | Spout          |
+| To CSV  | PhpSpreadSheet | PhpSpreadSheet | PhpSpreadSheet | Spout          |
+
+
+#### Without Template
+
+|         | Driver | 
+|---------|--------|
+| To XLSX | Spout  | 
+| To XLS  | LibXL  |
+| To ODS  | Spout  |
+| To CSV  | Spout  |
+
+* LibXL fallbacks to PhpSpreadSheet if not present
+* LibXL only support input/output with same format
+* XLS to ODS is not supported by any drivers
 
 ## Reader
 
@@ -88,18 +113,3 @@ $excel->close();
 - Spout do not support random read/write rows (Upstream limitation, Won't fix)
 - Spout do not support formula (Upstream limitation, Won't fix)
 - fputcsv driver ignores all ColumnType::* (File-type limitation, Won't fix)
-
-## TODO
-
-- [x] Register to [Packagist](https://packagist.org/packages/imtigger/oneexcel)
-- [x] Emulate writeCell() behavior for Spout/fputcsv writer
-- [x] OneExcelWriterFactory auto create writers base on input/output format
-- [x] Refactor: Move constants to separate class
-- [x] Implement load() for SpoutWriter and FPutCsvWriter
-- [x] Implement $writer->writeRow($arr)
-- [x] Implement ColumnType::NUMERIC, ColumnType::FORMULA for all drivers
-- [x] Implement ColumnType::DATE, ColumnType::TIME, ColumnType::DATETIME for all drivers
-- [ ] Implement ColumnType::* for Spout driver (Require upstream update)
-- [ ] Implement sheet support
-- [x] Implement Reader
-- [x] Add PHPUnit tests
