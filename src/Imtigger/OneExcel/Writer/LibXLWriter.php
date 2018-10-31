@@ -39,7 +39,11 @@ class LibXLWriter extends OneExcelWriter implements OneExcelWriterInterface
     
     public function setSheet($id)
     {
-        $this->sheet = $this->book->getSheet($id);
+        if ($this->output_format == Format::XLSX || $this->output_format == Format::XLS) {
+            $this->sheet = $this->book->getSheet($id);
+        } else {
+            throw new \Exception("Unsupported format {$this->output_format}");
+        }
     }
 
     public function writeCell($row_num, $column_num, $data, $data_type = null)
