@@ -14,7 +14,6 @@ class SpoutWriter extends OneExcelWriter implements OneExcelWriterInterface
     private $last_row = 0;
     private $data = [];
     private $temp_file;
-    private $sheets = [];
 
     public function create($output_format = Format::XLSX)
     {
@@ -46,7 +45,6 @@ class SpoutWriter extends OneExcelWriter implements OneExcelWriterInterface
         $reader->setShouldFormatDates(true);
 
         foreach ($reader->getSheetIterator() as $sheetIndex => $sheet) {
-            $this->sheets[$sheetIndex] = $sheet;
             if ($sheetIndex !== 1) {
                 $this->writer->addNewSheetAndMakeItCurrent();
             }
@@ -66,13 +64,7 @@ class SpoutWriter extends OneExcelWriter implements OneExcelWriterInterface
     
     public function setSheet($id)
     {
-        if ($this->output_format == Format::XLSX || $this->output_format == Format::XLS) {
-            if (!empty($this->sheets[$id])) {
-                $this->writer->setCurrentSheet($this->sheets[$id]);
-            }
-        } else {
-            throw new \Exception("Unsupported format {$this->output_format}");
-        }
+        throw new \Exception("Unsupported driver");
     }
 
     public function writeCell($row_num, $column_num, $data, $data_type = null)
