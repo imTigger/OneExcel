@@ -58,6 +58,11 @@ class FCsvWriter extends OneExcelWriter implements OneExcelWriterInterface
             throw new \Exception("{$filename} cannot be opened.");
         }
     }
+    
+    public function setSheet($id)
+    {
+        throw new \Exception("Unsupported format {$this->output_format}");
+    }
 
     public function writeCell($row_num, $column_num, $data, $data_type = null)
     {
