@@ -36,6 +36,11 @@ class LibXLWriter extends OneExcelWriter implements OneExcelWriterInterface
         $this->book->setLocale('UTF-8');
         $this->sheet = $this->book->getSheet(0);
     }
+    
+    public function setSheet($id)
+    {
+        $this->sheet = $this->book->getSheet($id);
+    }
 
     public function writeCell($row_num, $column_num, $data, $data_type = null)
     {
