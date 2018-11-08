@@ -36,6 +36,15 @@ class PhpSpreadsheetWriter extends OneExcelWriter implements OneExcelWriterInter
         $this->book = $objReader->load($filename);
         $this->sheet = $this->book->getActiveSheet();
     }
+    
+    public function setSheet($id)
+    {
+        if ($this->output_format == Format::XLSX || $this->output_format == Format::XLS) {
+            $this->sheet = $this->book->setActiveSheetIndex($id);
+        } else {
+            throw new \Exception("Unsupported format {$this->output_format}");
+        }
+    }
 
     public function writeCell($row_num, $column_num, $data, $data_type = null)
     {

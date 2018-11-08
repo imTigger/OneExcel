@@ -61,6 +61,11 @@ class SpoutWriter extends OneExcelWriter implements OneExcelWriterInterface
 
         $reader->close();
     }
+    
+    public function setSheet($id)
+    {
+        throw new \Exception("Unsupported driver");
+    }
 
     public function writeCell($row_num, $column_num, $data, $data_type = null)
     {
