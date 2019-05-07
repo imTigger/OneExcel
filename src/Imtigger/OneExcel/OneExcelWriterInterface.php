@@ -5,7 +5,9 @@ namespace Imtigger\OneExcel;
 interface OneExcelWriterInterface
 {
     public function create($output_format = Format::XLSX);
-
+    
+    public function setSheet($id);
+	
     public function load($filename, $output_format = Format::XLSX, $input_format = Format::AUTO);
 
     public function writeCell($row_num, $column_num, $data, $data_type = ColumnType::STRING);
