@@ -45,7 +45,7 @@ $excel->writeRow(4, ['One', 'Excel']);
 $excel->writeCell(4, 2, 'Test');
 
 $excel->output();
-```Selection](driver.md)
+```
 
 ### Advanced Usage
 
